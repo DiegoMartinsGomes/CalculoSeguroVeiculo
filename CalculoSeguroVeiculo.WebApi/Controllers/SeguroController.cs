@@ -1,4 +1,4 @@
-﻿using CalculoSeguroVeiculo.Domain.Models;
+﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,34 +9,38 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
     [ApiController]
     public class SeguroController : ControllerBase
     {
-        private readonly ISeguroApplicationService _appService;
+        private readonly ISeguroApplicationService _seguroApplicationService;
 
-        public SeguroController(ISeguroApplicationService appService)
+        public SeguroController(ISeguroApplicationService seguroApplicationService)
         {
-            _appService = appService;
+            _seguroApplicationService = seguroApplicationService; ;
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Seguro), 200)]
-        public ActionResult<Seguro> Post([FromBody] Seguro seguro)
+        public IActionResult Post([FromBody] SeguroPostDto seguro)
         {
-            _appService.Add(seguro);
-            return Ok(seguro);
+            _seguroApplicationService.InclusaoSeguro(seguro);
+
+            return Ok();
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Seguro>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SeguroGetDto>), 200)]
         public IActionResult GetAll()
         {
-            var result = _appService.GetAll();
+            var seguros = _seguroApplicationService.GetAll();
+            var result = _seguroApplicationService.EntitiesToDtos(seguros);
+
             return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(Seguro), 200)]
+        [ProducesResponseType(typeof(SeguroGetDto), 200)]
         public IActionResult GetById([FromRoute] int id)
         {
-            var result = _appService.GetById(id);
+            var seguro = _seguroApplicationService.GetById(id);
+            var result = _seguroApplicationService.EntityToDto(seguro);
+
             return Ok(result);
         }
     }

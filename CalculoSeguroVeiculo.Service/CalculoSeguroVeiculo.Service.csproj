@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CalculoSeguroVeiculo.Crosscutting\CalculoSeguroVeiculo.Crosscutting.csproj" />
     <ProjectReference Include="..\CalculoSeguroVeiculo.Infrastructure\CalculoSeguroVeiculo.Infrastructure.csproj" />
   </ItemGroup>
 

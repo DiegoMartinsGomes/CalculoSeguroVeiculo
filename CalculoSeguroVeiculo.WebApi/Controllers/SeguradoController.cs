@@ -1,4 +1,4 @@
-﻿using CalculoSeguroVeiculo.Domain.Models;
+﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguradoDto;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,34 +9,39 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
     [ApiController]
     public class SeguradoController : ControllerBase
     {
-        private readonly ISeguradoApplicationService _appService;
+        private readonly ISeguradoApplicationService _seguradoApplicationService;
 
-        public SeguradoController(ISeguradoApplicationService appService)
+        public SeguradoController(ISeguradoApplicationService seguradoApplicationService)
         {
-            _appService = appService;
+            _seguradoApplicationService = seguradoApplicationService;
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Segurado), 200)]
-        public ActionResult<Segurado> Post([FromBody] Segurado segurado)
+        public IActionResult Post([FromBody] SeguradoPostDto seguradoDto)
         {
-            _appService.Add(segurado);
-            return Ok(segurado);
+            var segurado = _seguradoApplicationService.DtoToEntity(seguradoDto);
+            _seguradoApplicationService.Add(segurado);
+
+            return Ok();
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Segurado>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SeguradoGetDto>), 200)]
         public IActionResult GetAll()
         {
-            var result = _appService.GetAll();
+            var segurados = _seguradoApplicationService.GetAll();
+            var result = _seguradoApplicationService.EntitiesToDtos(segurados);
+
             return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(Segurado), 200)]
+        [ProducesResponseType(typeof(SeguradoGetDto), 200)]
         public IActionResult GetById([FromRoute] int id)
         {
-            var result = _appService.GetById(id);
+            var segurado = _seguradoApplicationService.GetById(id);
+            var result = _seguradoApplicationService.EntityToDto(segurado);
+
             return Ok(result);
         }
     }

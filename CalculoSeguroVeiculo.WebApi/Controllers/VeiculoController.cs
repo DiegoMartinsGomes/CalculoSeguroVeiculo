@@ -1,4 +1,4 @@
-﻿using CalculoSeguroVeiculo.Domain.Models;
+﻿using CalculoSeguroVeiculo.Crosscutting.Dto.VeiculoDto;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,34 +9,39 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
     [ApiController]
     public class VeiculoController : ControllerBase
     {
-        private readonly IVeiculoApplicationService _appService;
+        private readonly IVeiculoApplicationService _veiculoApplicationService;
 
-        public VeiculoController(IVeiculoApplicationService appService)
+        public VeiculoController(IVeiculoApplicationService veiculoApplicationService)
         {
-            _appService = appService;
+            _veiculoApplicationService = veiculoApplicationService;
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Veiculo), 200)]
-        public ActionResult<Veiculo> Post([FromBody] Veiculo veiculo)
+        public IActionResult Post([FromBody] VeiculoPostDto veiculoDto)
         {
-            _appService.Add(veiculo);
-            return Ok(veiculo);
+            var veiculo = _veiculoApplicationService.DtoToEntity(veiculoDto);
+            _veiculoApplicationService.Add(veiculo);
+
+            return Ok();
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Veiculo>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<VeiculoGetDto>), 200)]
         public IActionResult GetAll()
         {
-            var result = _appService.GetAll();
+            var veiculos = _veiculoApplicationService.GetAll();
+            var result = _veiculoApplicationService.EntitiesToDtos(veiculos);
+
             return Ok(result);
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(Veiculo), 200)]
+        [ProducesResponseType(typeof(VeiculoGetDto), 200)]
         public IActionResult GetById([FromRoute] int id)
         {
-            var result = _appService.GetById(id);
+            var veiculo = _veiculoApplicationService.GetById(id);
+            var result = _veiculoApplicationService.EntityToDto(veiculo);
+
             return Ok(result);
         }
     }
