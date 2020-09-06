@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CalculoSeguroVeiculo.Service.Interfaces
 {
@@ -7,7 +6,7 @@ namespace CalculoSeguroVeiculo.Service.Interfaces
     {
         void Add(TEntity entity);
 
-        List<TEntity> GetAll();
+        IEnumerable<TEntity> GetAll();
 
         TEntity GetById(int id);
     }

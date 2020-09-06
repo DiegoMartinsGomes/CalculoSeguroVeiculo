@@ -11,6 +11,13 @@ namespace CalculoSeguroVeiculo.Infrastructure.Context
         public ReplyContext() =>
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-        public virtual DbSet<Veiculo> Veiculos { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+        }
+
+        public virtual DbSet<Segurado> Segurado { get; set; }
+        public virtual DbSet<Veiculo> Veiculo { get; set; }
+        public virtual DbSet<Seguro> Seguro { get; set; }
     }
 }

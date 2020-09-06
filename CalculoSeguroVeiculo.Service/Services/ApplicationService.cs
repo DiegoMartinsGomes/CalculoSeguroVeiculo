@@ -19,7 +19,7 @@ namespace CalculoSeguroVeiculo.Service.Services
             _repository.Add(entity);
         }
 
-        public List<TEntity> GetAll()
+        public IEnumerable<TEntity> GetAll()
         {
             return _repository.GetAll().ToList();
         }

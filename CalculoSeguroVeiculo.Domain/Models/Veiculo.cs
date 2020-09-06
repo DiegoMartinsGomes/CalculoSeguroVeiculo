@@ -2,8 +2,10 @@
 {
     public class Veiculo : Entity
     {
-        public double Valor { get; set; }
-
         public string Marca { get; set; }
+
+        public string Modelo { get; set; }
+
+        public decimal Valor { get; set; }
     }
 }

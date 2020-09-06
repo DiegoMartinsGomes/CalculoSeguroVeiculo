@@ -7,25 +7,25 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VeiculoController : ControllerBase
+    public class SeguradoController : ControllerBase
     {
-        private readonly IVeiculoApplicationService _appService;
+        private readonly ISeguradoApplicationService _appService;
 
-        public VeiculoController(IVeiculoApplicationService appService)
+        public SeguradoController(ISeguradoApplicationService appService)
         {
             _appService = appService;
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Veiculo), 200)]
-        public ActionResult<Veiculo> Post([FromBody] Veiculo veiculo)
+        [ProducesResponseType(typeof(Segurado), 200)]
+        public ActionResult<Segurado> Post([FromBody] Segurado segurado)
         {
-            _appService.Add(veiculo);
-            return Ok(veiculo);
+            _appService.Add(segurado);
+            return Ok(segurado);
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Veiculo>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<Segurado>), 200)]
         public IActionResult GetAll()
         {
             var result = _appService.GetAll();
@@ -33,7 +33,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(Veiculo), 200)]
+        [ProducesResponseType(typeof(Segurado), 200)]
         public IActionResult GetById([FromRoute] int id)
         {
             var result = _appService.GetById(id);

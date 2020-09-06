@@ -4,9 +4,9 @@ using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
 
 namespace CalculoSeguroVeiculo.Infrastructure.Repository
 {
-    public class VeiculoRepository : Repository<Veiculo>, IVeiculoRepository
+    public class SeguroRepository : Repository<Seguro>, ISeguroRepository
     {
-        public VeiculoRepository(ReplyContext context) : base(context)
+        public SeguroRepository(ReplyContext context) : base(context)
         {
         }
     }

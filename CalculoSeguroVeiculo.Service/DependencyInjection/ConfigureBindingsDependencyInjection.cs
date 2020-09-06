@@ -10,8 +10,8 @@ namespace CalculoSeguroVeiculo.Service.DependencyInjection
         public static void RegisterBindings(IServiceCollection services, IConfiguration configuration)
         {
             ConfigureBindingsDatabaseContext.RegisterBindingsSqlServer(services, configuration);
-            ConfigureBindingsApplicationService.RegisterBindings(services, configuration);
-            ConfigureBindingsRepository.RegisterBindings(services, configuration);
+            ConfigureBindingsApplicationService.RegisterBindings(services);
+            ConfigureBindingsRepository.RegisterBindings(services);
         }
     }
 }
