@@ -8,11 +8,11 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    public class VeiculoController : ControllerBase
+    public class VeiculosController : ControllerBase
     {
         private readonly IVeiculoApplicationService _veiculoApplicationService;
 
-        public VeiculoController(IVeiculoApplicationService veiculoApplicationService)
+        public VeiculosController(IVeiculoApplicationService veiculoApplicationService)
         {
             _veiculoApplicationService = veiculoApplicationService;
         }

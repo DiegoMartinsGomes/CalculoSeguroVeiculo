@@ -39,13 +39,16 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public VeiculoGetDto EntityToDto(Veiculo veiculo)
         {
-            return new VeiculoGetDto()
-            {
-                Id = veiculo.Id,
-                Marca = veiculo.Marca,
-                Modelo = veiculo.Modelo,
-                Valor = veiculo.Valor
-            };
+            if (veiculo == null)
+                return new VeiculoGetDto();
+            else
+                return new VeiculoGetDto()
+                {
+                    Id = veiculo.Id,
+                    Marca = veiculo.Marca,
+                    Modelo = veiculo.Modelo,
+                    Valor = veiculo.Valor
+                };
         }
     }
 }

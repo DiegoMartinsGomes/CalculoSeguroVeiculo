@@ -8,11 +8,11 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    public class SeguradoController : ControllerBase
+    public class SeguradosController : ControllerBase
     {
         private readonly ISeguradoApplicationService _seguradoApplicationService;
 
-        public SeguradoController(ISeguradoApplicationService seguradoApplicationService)
+        public SeguradosController(ISeguradoApplicationService seguradoApplicationService)
         {
             _seguradoApplicationService = seguradoApplicationService;
         }

@@ -2,16 +2,16 @@
 using CalculoSeguroVeiculo.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CalculoSeguroVeiculo.WebApi.Controllers.Relatorio.V1
+namespace CalculoSeguroVeiculo.WebApi.Controllers.Relatorio.V2
 {
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    public class RelatorioSeguroController : ControllerBase
+    public class RelatoriosController : ControllerBase
     {
         private readonly ISeguroApplicationService _seguroApplicationService;
 
-        public RelatorioSeguroController(ISeguroApplicationService seguroApplicationService)
+        public RelatoriosController(ISeguroApplicationService seguroApplicationService)
         {
             _seguroApplicationService = seguroApplicationService; ;
         }
@@ -23,7 +23,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers.Relatorio.V1
             var seguros = _seguroApplicationService.GetAll();
             var segurosDto = _seguroApplicationService.EntitiesToDtos(seguros);
 
-            var result = _seguroApplicationService.RelatorioV1(segurosDto);
+            var result = _seguroApplicationService.RelatorioV2(segurosDto);
 
             return Ok(result);
         }

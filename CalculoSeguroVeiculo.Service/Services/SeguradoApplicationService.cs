@@ -39,13 +39,16 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public SeguradoGetDto EntityToDto(Segurado segurado)
         {
-            return new SeguradoGetDto()
-            {
-                Id = segurado.Id,
-                Nome = segurado.Nome,
-                CPF = segurado.CPF,
-                Idade = segurado.Idade
-            };
+            if (segurado == null)
+                return new SeguradoGetDto();
+            else
+                return new SeguradoGetDto()
+                {
+                    Id = segurado.Id,
+                    Nome = segurado.Nome,
+                    CPF = segurado.CPF,
+                    Idade = segurado.Idade
+                };
         }
     }
 }
