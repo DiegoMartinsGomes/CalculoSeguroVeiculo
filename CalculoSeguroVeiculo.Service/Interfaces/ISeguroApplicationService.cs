@@ -9,5 +9,7 @@ namespace CalculoSeguroVeiculo.Service.Interfaces
         void InclusaoSeguro(SeguroPostDto seguro);
         SeguroGetDto EntityToDto(Seguro seguro);
         IEnumerable<SeguroGetDto> EntitiesToDtos(IEnumerable<Seguro> seguros);
+        decimal CalculoSeguroVeiculo(Veiculo veiculo);
+        SeguroGetReportDto Relatorio(IEnumerable<SeguroGetDto> seguros);
     }
 }

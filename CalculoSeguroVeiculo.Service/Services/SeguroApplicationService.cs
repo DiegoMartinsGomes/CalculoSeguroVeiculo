@@ -1,4 +1,5 @@
 ﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto;
+using CalculoSeguroVeiculo.Crosscutting.Estatico;
 using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
@@ -26,15 +27,15 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public void InclusaoSeguro(SeguroPostDto seguroDto)
         {
-            //TODO
-            var valorSeguro = 1000;
+            var veiculo = _veiculoApplicationService.GetById(seguroDto.IdVeiculo);
+            var valorSeguro = CalculoSeguroVeiculo(veiculo);
 
             var seguro = new Seguro()
             {
                 IdSegurado = seguroDto.IdSegurado,
                 IdVeiculo = seguroDto.IdVeiculo,
                 DataCalculo = DateTime.Now,
-                ValorSeguro = valorSeguro,
+                Valor = valorSeguro,
             };
 
             Add(seguro);
@@ -51,7 +52,7 @@ namespace CalculoSeguroVeiculo.Service.Services
                 IdSegurado = seguro.IdSegurado,
                 IdVeiculo = seguro.IdVeiculo,
                 DataCalculo = seguro.DataCalculo,
-                ValorSeguro = seguro.ValorSeguro,
+                Valor = seguro.Valor,
                 Segurado = segurado,
                 Veiculo = veiculo,
             };
@@ -65,10 +66,35 @@ namespace CalculoSeguroVeiculo.Service.Services
                 IdSegurado = x.IdSegurado,
                 IdVeiculo = x.IdVeiculo,
                 DataCalculo = x.DataCalculo,
-                ValorSeguro = x.ValorSeguro,
+                Valor = x.Valor,
                 Segurado = _seguradoApplicationService.EntityToDto(_seguradoApplicationService.GetById(x.IdSegurado)),
                 Veiculo = _veiculoApplicationService.EntityToDto(_veiculoApplicationService.GetById(x.IdVeiculo))
             });
+        }
+
+        public decimal CalculoSeguroVeiculo(Veiculo veiculo)
+        {
+            var valorVeiculo = Convert.ToDouble(veiculo.Valor);
+            var taxaRisco = ((valorVeiculo * 5) / (2 * valorVeiculo));
+            var premioRisco = (taxaRisco * valorVeiculo);
+            var premioPuro = (premioRisco * (1 + PercentualCalculo.MargemSeguranca));
+            var premioComercial = (PercentualCalculo.Lucro * premioPuro);
+
+            var valorSeguro = Convert.ToDecimal(Math.Round(((premioComercial + premioPuro) / 100), 2, MidpointRounding.ToZero));
+
+            return valorSeguro;
+        }
+
+        public SeguroGetReportDto Relatorio(IEnumerable<SeguroGetDto> seguros)
+        {
+            var media = seguros.Average(x => x.Valor);
+
+            return new SeguroGetReportDto()
+            {
+                Seguros = seguros,
+                Descricao = $"A média aritmética dos seguros é de: {media}.",
+                Media = media
+            };
         }
     }
 }

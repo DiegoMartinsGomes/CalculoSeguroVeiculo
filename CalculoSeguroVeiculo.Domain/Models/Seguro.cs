@@ -8,7 +8,7 @@ namespace CalculoSeguroVeiculo.Domain.Models
 
         public int IdVeiculo { get; set; }
 
-        public decimal ValorSeguro { get; set; }
+        public decimal Valor { get; set; }
 
         public DateTime DataCalculo { get; set; }
 

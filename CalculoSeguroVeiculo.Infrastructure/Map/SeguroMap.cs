@@ -17,7 +17,7 @@ namespace CalculoSeguroVeiculo.Infrastructure.Map
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
-            builder.Property(x => x.ValorSeguro)
+            builder.Property(x => x.Valor)
                 .HasColumnName("ValorSeguro")
                 .HasColumnType("decimal(16,2)")
                 .IsRequired();

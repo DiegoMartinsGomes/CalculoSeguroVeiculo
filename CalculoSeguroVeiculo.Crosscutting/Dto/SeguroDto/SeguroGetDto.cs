@@ -12,7 +12,7 @@ namespace CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto
 
         public int IdVeiculo { get; set; }
 
-        public decimal ValorSeguro { get; set; }
+        public decimal Valor { get; set; }
 
         public DateTime DataCalculo { get; set; }
 

@@ -43,5 +43,17 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("relatorio")]
+        [ProducesResponseType(typeof(SeguroGetReportDto), 200)]
+        public IActionResult GetReport()
+        {
+            var seguros = _seguroApplicationService.GetAll();
+            var segurosDto = _seguroApplicationService.EntitiesToDtos(seguros);
+
+            var result = _seguroApplicationService.Relatorio(segurosDto);
+
+            return Ok(result);
+        }
     }
 }
