@@ -1,4 +1,6 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto;
+﻿using CalculoSeguroVeiculo.Crosscutting.Dto.Relatorio.V1;
+using CalculoSeguroVeiculo.Crosscutting.Dto.Relatorio.V2;
+using CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto;
 using CalculoSeguroVeiculo.Crosscutting.Estatico;
 using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
@@ -85,14 +87,24 @@ namespace CalculoSeguroVeiculo.Service.Services
             return valorSeguro;
         }
 
-        public SeguroGetReportDto Relatorio(IEnumerable<SeguroGetDto> seguros)
+        public RelatorioSeguroV1GetDto RelatorioV1(IEnumerable<SeguroGetDto> seguros)
         {
             var media = seguros.Average(x => x.Valor);
 
-            return new SeguroGetReportDto()
+            return new RelatorioSeguroV1GetDto()
+            {
+                Media = media
+            };
+        }
+
+        public RelatorioSeguroV2GetDto RelatorioV2(IEnumerable<SeguroGetDto> seguros)
+        {
+            var media = seguros.Average(x => x.Valor);
+
+            return new RelatorioSeguroV2GetDto()
             {
                 Seguros = seguros,
-                Descricao = $"A média aritmética dos seguros é de: {media}.",
+                Mensagem = $"A média aritimética dos Seguros é de: {media}.",
                 Media = media
             };
         }

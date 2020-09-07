@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 namespace CalculoSeguroVeiculo.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class SeguroController : ControllerBase
     {
@@ -40,18 +41,6 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         {
             var seguro = _seguroApplicationService.GetById(id);
             var result = _seguroApplicationService.EntityToDto(seguro);
-
-            return Ok(result);
-        }
-
-        [HttpGet("relatorio")]
-        [ProducesResponseType(typeof(SeguroGetReportDto), 200)]
-        public IActionResult GetReport()
-        {
-            var seguros = _seguroApplicationService.GetAll();
-            var segurosDto = _seguroApplicationService.EntitiesToDtos(seguros);
-
-            var result = _seguroApplicationService.Relatorio(segurosDto);
 
             return Ok(result);
         }

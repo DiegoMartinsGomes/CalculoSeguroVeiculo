@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 namespace CalculoSeguroVeiculo.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class SeguradoController : ControllerBase
     {
