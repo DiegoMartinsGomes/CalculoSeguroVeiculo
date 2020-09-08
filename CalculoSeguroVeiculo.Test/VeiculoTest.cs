@@ -1,5 +1,4 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.VeiculoDto;
-using CalculoSeguroVeiculo.Domain.Models;
+﻿using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Context;
 using CalculoSeguroVeiculo.Infrastructure.Repository;
 using CalculoSeguroVeiculo.Service.Services;
@@ -7,7 +6,6 @@ using CalculoSeguroVeiculo.Test.MockDados;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace CalculoSeguroVeiculo.Test
@@ -19,7 +17,6 @@ namespace CalculoSeguroVeiculo.Test
         private readonly VeiculoRepository _veiculoRepository;
         private readonly VeiculoApplicationService _veiculoApplicationService;
         private readonly Random _valorAleatorio;
-
 
         public VeiculoTest()
         {
@@ -94,30 +91,6 @@ namespace CalculoSeguroVeiculo.Test
             var veiculos = _veiculoApplicationService.GetAll().Where(x => x.Id == id);
 
             Assert.IsEmpty(veiculos);
-        }
-
-        [Test]
-        public void DtoToEntityIsNotNull()
-        {
-            var veiculo = _veiculoApplicationService.DtoToEntity(new VeiculoPostDto());
-
-            Assert.IsNotNull(veiculo);
-        }
-
-        [Test]
-        public void EntitiesToDtosIsNotNull()
-        {
-            var veiculos = _veiculoApplicationService.EntitiesToDtos(new List<Veiculo>());
-
-            Assert.IsNotNull(veiculos);
-        }
-
-        [Test]
-        public void EntityToDtoIsNotNull()
-        {
-            var veiculos = _veiculoApplicationService.EntityToDto(new Veiculo());
-
-            Assert.IsNotNull(veiculos);
         }
     }
 }

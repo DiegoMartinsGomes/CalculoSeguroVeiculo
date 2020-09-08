@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculoSeguroVeiculo.Infras
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculoSeguroVeiculo.Domain", "CalculoSeguroVeiculo.Domain\CalculoSeguroVeiculo.Domain.csproj", "{111CE55D-19BB-4945-9909-D7F76B274624}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculoSeguroVeiculo.Crosscutting", "CalculoSeguroVeiculo.Crosscutting\CalculoSeguroVeiculo.Crosscutting.csproj", "{7ED2DFAE-5BDD-469A-9843-8D2474DE5B2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculoSeguroVeiculo.Crosscutting", "CalculoSeguroVeiculo.Crosscutting\CalculoSeguroVeiculo.Crosscutting.csproj", "{7ED2DFAE-5BDD-469A-9843-8D2474DE5B2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculoSeguroVeiculo.Test", "CalculoSeguroVeiculo.Test\CalculoSeguroVeiculo.Test.csproj", "{07B78526-8BDA-42DE-B367-07FBE7910E0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculoSeguroVeiculo.Test", "CalculoSeguroVeiculo.Test\CalculoSeguroVeiculo.Test.csproj", "{07B78526-8BDA-42DE-B367-07FBE7910E0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculoSeguroVeiculo.DataTransferObject", "CalculoSeguroVeiculo.DataTransferObject\CalculoSeguroVeiculo.DataTransferObject.csproj", "{3B397789-3B5E-417D-8094-E78AB03611FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{07B78526-8BDA-42DE-B367-07FBE7910E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07B78526-8BDA-42DE-B367-07FBE7910E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07B78526-8BDA-42DE-B367-07FBE7910E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B397789-3B5E-417D-8094-E78AB03611FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B397789-3B5E-417D-8094-E78AB03611FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B397789-3B5E-417D-8094-E78AB03611FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B397789-3B5E-417D-8094-E78AB03611FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

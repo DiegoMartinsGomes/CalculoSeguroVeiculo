@@ -1,7 +1,8 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.Relatorio.V1;
-using CalculoSeguroVeiculo.Crosscutting.Dto.Relatorio.V2;
-using CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto;
-using CalculoSeguroVeiculo.Crosscutting.Estatico;
+﻿using CalculoSeguroVeiculo.Crosscutting.Estatico;
+using CalculoSeguroVeiculo.DataTransferObject.Relatorio.V1;
+using CalculoSeguroVeiculo.DataTransferObject.Relatorio.V2;
+using CalculoSeguroVeiculo.DataTransferObject.SeguroDto;
+using CalculoSeguroVeiculo.Domain.Mappings;
 using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
@@ -31,7 +32,6 @@ namespace CalculoSeguroVeiculo.Service.Services
         {
             var veiculo = _veiculoApplicationService.GetById(seguroDto.IdVeiculo);
             var valorSeguro = CalculoSeguroVeiculo(veiculo);
-
             var seguro = new Seguro()
             {
                 IdSegurado = seguroDto.IdSegurado,
@@ -39,59 +39,24 @@ namespace CalculoSeguroVeiculo.Service.Services
                 DataCalculo = DateTime.Now,
                 Valor = valorSeguro,
             };
-
             Add(seguro);
-        }
-
-        public SeguroGetDto EntityToDto(Seguro seguro)
-        {
-            var segurado = _seguradoApplicationService.EntityToDto(_seguradoApplicationService.GetById(seguro.IdSegurado));
-            var veiculo = _veiculoApplicationService.EntityToDto(_veiculoApplicationService.GetById(seguro.IdVeiculo));
-
-            return new SeguroGetDto()
-            {
-                Id = seguro.Id,
-                IdSegurado = seguro.IdSegurado,
-                IdVeiculo = seguro.IdVeiculo,
-                DataCalculo = seguro.DataCalculo,
-                Valor = seguro.Valor,
-                Segurado = segurado,
-                Veiculo = veiculo,
-            };
-        }
-
-        public IEnumerable<SeguroGetDto> EntitiesToDtos(IEnumerable<Seguro> seguros)
-        {
-            return seguros.Select(x => new SeguroGetDto()
-            {
-                Id = x.Id,
-                IdSegurado = x.IdSegurado,
-                IdVeiculo = x.IdVeiculo,
-                DataCalculo = x.DataCalculo,
-                Valor = x.Valor,
-                Segurado = _seguradoApplicationService.EntityToDto(_seguradoApplicationService.GetById(x.IdSegurado)),
-                Veiculo = _veiculoApplicationService.EntityToDto(_veiculoApplicationService.GetById(x.IdVeiculo))
-            });
         }
 
         public decimal CalculoSeguroVeiculo(Veiculo veiculo)
         {
             var valorVeiculo = Convert.ToDouble(veiculo.Valor);
-            var taxaRisco = ((valorVeiculo * 5) / (2 * valorVeiculo));
+            var taxaRisco = ((valorVeiculo * TaxaCalculo.ValorCinco) / (TaxaCalculo.ValorDois * valorVeiculo));
             var premioRisco = (taxaRisco * valorVeiculo);
-            var premioPuro = (premioRisco * (1 + PercentualCalculo.MargemSeguranca));
+            var premioPuro = (premioRisco * (TaxaCalculo.ValorUm + PercentualCalculo.MargemSeguranca));
             var premioComercial = (PercentualCalculo.Lucro * premioPuro);
-
             var valorSeguro = Convert.ToDecimal(Math.Round(((premioComercial + premioPuro) / 100), 2, MidpointRounding.ToZero));
-
             return valorSeguro;
         }
 
         public RelatorioSeguroV1GetDto GerarRelatorioV1()
         {
-            var seguros = _seguroRepository.GetAll();
+            var seguros = GetAllRelacionado();
             var media = seguros.Average(x => x.Valor);
-
             return new RelatorioSeguroV1GetDto()
             {
                 Media = media
@@ -100,12 +65,11 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public RelatorioSeguroV2GetDto GerarRelatorioV2()
         {
-            var seguros = _seguroRepository.GetAll();
+            var seguros = GetAllRelacionado();
             var media = seguros.Average(x => x.Valor);
-
             return new RelatorioSeguroV2GetDto()
             {
-                Seguros = EntitiesToDtos(seguros),
+                Seguros = Mapping.ToSegurosGetDto(seguros),
                 Mensagem = $"A média aritimética dos Seguros é de: {media}.",
                 Media = media
             };
@@ -113,14 +77,32 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public IEnumerable<SeguroGetDto> GetAllDto()
         {
-            var seguros = GetAll();
-            return EntitiesToDtos(seguros);
+            var seguros = GetAllRelacionado();
+            return Mapping.ToSegurosGetDto(seguros);
         }
 
         public SeguroGetDto GetByIdDto(int id)
         {
             var seguro = GetById(id);
-            return EntityToDto(seguro);
+            var segurado = _seguradoApplicationService.GetById(seguro.IdSegurado);
+            var veiculo = _veiculoApplicationService.GetById(seguro.IdVeiculo);
+            return Mapping.ToSeguroGetDto(seguro, segurado, veiculo);
+        }
+
+        public IEnumerable<Seguro> GetAllRelacionado()
+        {
+            var seguros = _seguroRepository.GetAll()
+                .Select(x => new Seguro()
+                {
+                    Id = x.Id,
+                    IdSegurado = x.IdSegurado,
+                    IdVeiculo = x.IdVeiculo,
+                    DataCalculo = x.DataCalculo,
+                    Valor = x.Valor,
+                    Segurado = x.Segurado,
+                    Veiculo = x.Veiculo
+                });
+            return seguros;
         }
     }
 }

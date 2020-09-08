@@ -1,4 +1,4 @@
-﻿namespace CalculoSeguroVeiculo.Crosscutting.Dto.VeiculoDto
+﻿namespace CalculoSeguroVeiculo.DataTransferObject.VeiculoDto
 {
     public class VeiculoGetDto
     {

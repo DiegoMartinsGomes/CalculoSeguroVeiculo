@@ -1,4 +1,4 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto;
+﻿using CalculoSeguroVeiculo.DataTransferObject.SeguroDto;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -21,7 +21,6 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         public IActionResult Post([FromBody] SeguroPostDto seguro)
         {
             _seguroApplicationService.InclusaoSeguro(seguro);
-
             return Ok();
         }
 
@@ -30,7 +29,6 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         public IActionResult GetAll()
         {
             var result = _seguroApplicationService.GetAllDto();
-
             return Ok(result);
         }
 
@@ -39,7 +37,6 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         public IActionResult GetById([FromRoute] int id)
         {
             var result = _seguroApplicationService.GetByIdDto(id);
-
             return Ok(result);
         }
     }

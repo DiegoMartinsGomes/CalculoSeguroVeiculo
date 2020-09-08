@@ -1,4 +1,4 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto;
+﻿using CalculoSeguroVeiculo.DataTransferObject.SeguroDto;
 using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Context;
 using CalculoSeguroVeiculo.Infrastructure.Repository;
@@ -9,6 +9,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CalculoSeguroVeiculo.Domain.Mappings;
 
 namespace CalculoSeguroVeiculo.Test
 {
@@ -100,36 +101,6 @@ namespace CalculoSeguroVeiculo.Test
             var segurados = _seguroApplicationService.GetAll().Where(x => x.Id == id);
 
             Assert.IsEmpty(segurados);
-        }
-
-        [Test]
-        public void EntitiesToDtosIsNotNull()
-        {
-            var veiculos = _seguroApplicationService.EntitiesToDtos(new List<Seguro>());
-
-            Assert.IsNotNull(veiculos);
-        }
-
-        [Test]
-        public void EntityToDtoIsNotNull()
-        {
-            var segurado = _context.Segurado.Where(x => x.Id == 1).FirstOrDefault();
-            var veiculo = _context.Veiculo.Where(x => x.Id == 10).FirstOrDefault();
-
-            var seguro = new Seguro()
-            {
-                Id = _valorAleatorio.Next(),
-                IdSegurado = segurado.Id,
-                IdVeiculo = veiculo.Id,
-                DataCalculo = DateTime.Now,
-                Segurado = segurado,
-                Veiculo = veiculo,
-                Valor = Convert.ToDecimal(_valorAleatorio.NextDouble())
-            };
-
-            var seguroDto = _seguroApplicationService.EntityToDto(seguro);
-
-            Assert.IsNotNull(seguroDto);
         }
 
         [Test]

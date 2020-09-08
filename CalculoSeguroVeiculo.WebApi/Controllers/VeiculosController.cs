@@ -1,4 +1,4 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.VeiculoDto;
+﻿using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

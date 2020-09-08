@@ -1,10 +1,9 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguradoDto;
+﻿using CalculoSeguroVeiculo.DataTransferObject.SeguradoDto;
+using CalculoSeguroVeiculo.Domain.Mappings;
 using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace CalculoSeguroVeiculo.Service.Services
 {
@@ -17,57 +16,22 @@ namespace CalculoSeguroVeiculo.Service.Services
             _seguradoRepository = seguradoRepository;
         }
 
-        public Segurado DtoToEntity(SeguradoPostDto segurado)
-        {
-            return new Segurado()
-            {
-                Nome = segurado.Nome,
-                CPF = segurado.CPF,
-                Idade = segurado.Idade
-            };
-        }
-
-        public IEnumerable<SeguradoGetDto> EntitiesToDtos(IEnumerable<Segurado> segurados)
-        {
-            return segurados.Select(x => new SeguradoGetDto()
-            {
-                Id = x.Id,
-                Nome = x.Nome,
-                CPF = x.CPF,
-                Idade = x.Idade
-            });
-        }
-
         public void InclusaoSegurado(SeguradoPostDto seguradoDto)
         {
-            var segurado = DtoToEntity(seguradoDto);
+            var segurado = Mapping.ToSegurado(seguradoDto);
             Add(segurado);
         }
 
         public IEnumerable<SeguradoGetDto> GetAllDto()
         {
             var segurados = GetAll();
-            return EntitiesToDtos(segurados);
+            return Mapping.ToSeguradosGetDto(segurados);
         }
 
         public SeguradoGetDto GetByIdDto(in int id)
         {
             var segurado = GetById(id);
-            return EntityToDto(segurado);
-        }
-
-        public SeguradoGetDto EntityToDto(Segurado segurado)
-        {
-            if (segurado == null)
-                return new SeguradoGetDto();
-            else
-                return new SeguradoGetDto()
-                {
-                    Id = segurado.Id,
-                    Nome = segurado.Nome,
-                    CPF = segurado.CPF,
-                    Idade = segurado.Idade
-                };
+            return Mapping.ToSeguradoGetDto(segurado);
         }
     }
 }

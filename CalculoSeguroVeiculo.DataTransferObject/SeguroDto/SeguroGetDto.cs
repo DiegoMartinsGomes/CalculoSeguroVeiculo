@@ -1,8 +1,8 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguradoDto;
-using CalculoSeguroVeiculo.Crosscutting.Dto.VeiculoDto;
+﻿using CalculoSeguroVeiculo.DataTransferObject.SeguradoDto;
+using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
 using System;
 
-namespace CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto
+namespace CalculoSeguroVeiculo.DataTransferObject.SeguroDto
 {
     public class SeguroGetDto
     {

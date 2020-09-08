@@ -1,7 +1,7 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguroDto;
+﻿using CalculoSeguroVeiculo.DataTransferObject.SeguroDto;
 using System.Collections.Generic;
 
-namespace CalculoSeguroVeiculo.Crosscutting.Dto.Relatorio.V2
+namespace CalculoSeguroVeiculo.DataTransferObject.Relatorio.V2
 {
     public class RelatorioSeguroV2GetDto
     {

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CalculoSeguroVeiculo.Crosscutting\CalculoSeguroVeiculo.Crosscutting.csproj" />
+    <ProjectReference Include="..\CalculoSeguroVeiculo.DataTransferObject\CalculoSeguroVeiculo.DataTransferObject.csproj" />
     <ProjectReference Include="..\CalculoSeguroVeiculo.Service\CalculoSeguroVeiculo.Service.csproj" />
   </ItemGroup>
 

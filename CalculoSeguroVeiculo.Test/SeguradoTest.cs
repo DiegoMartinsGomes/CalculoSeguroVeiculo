@@ -1,4 +1,4 @@
-﻿using CalculoSeguroVeiculo.Crosscutting.Dto.SeguradoDto;
+﻿using CalculoSeguroVeiculo.DataTransferObject.SeguradoDto;
 using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Context;
 using CalculoSeguroVeiculo.Infrastructure.Repository;
@@ -9,6 +9,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CalculoSeguroVeiculo.Domain.Mappings;
 
 namespace CalculoSeguroVeiculo.Test
 {
@@ -94,30 +95,6 @@ namespace CalculoSeguroVeiculo.Test
             var segurados = _seguradoApplicationService.GetAll().Where(x => x.Id == id);
 
             Assert.IsEmpty(segurados);
-        }
-
-        [Test]
-        public void DtoToEntityIsNotNull()
-        {
-            var veiculo = _seguradoApplicationService.DtoToEntity(new SeguradoPostDto());
-
-            Assert.IsNotNull(veiculo);
-        }
-
-        [Test]
-        public void EntitiesToDtosIsNotNull()
-        {
-            var veiculos = _seguradoApplicationService.EntitiesToDtos(new List<Segurado>());
-
-            Assert.IsNotNull(veiculos);
-        }
-
-        [Test]
-        public void EntityToDtoIsNotNull()
-        {
-            var veiculos = _seguradoApplicationService.EntityToDto(new Segurado());
-
-            Assert.IsNotNull(veiculos);
         }
     }
 }

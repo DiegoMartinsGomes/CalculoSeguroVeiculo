@@ -1,7 +1,9 @@
-﻿namespace CalculoSeguroVeiculo.Crosscutting.Dto.SeguradoDto
+﻿namespace CalculoSeguroVeiculo.DataTransferObject.SeguradoDto
 {
-    public class SeguradoPostDto
+    public class SeguradoGetDto
     {
+        public int Id { get; set; }
+
         public string Nome { get; set; }
 
         public string CPF { get; set; }
