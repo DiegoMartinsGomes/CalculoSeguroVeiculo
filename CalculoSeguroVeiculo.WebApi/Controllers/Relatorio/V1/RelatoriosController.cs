@@ -20,10 +20,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers.Relatorio.V1
         [ProducesResponseType(typeof(RelatorioSeguroV1GetDto), 200)]
         public IActionResult GetReport()
         {
-            var seguros = _seguroApplicationService.GetAll();
-            var segurosDto = _seguroApplicationService.EntitiesToDtos(seguros);
-
-            var result = _seguroApplicationService.RelatorioV1(segurosDto);
+            var result = _seguroApplicationService.GerarRelatorioV1();
 
             return Ok(result);
         }

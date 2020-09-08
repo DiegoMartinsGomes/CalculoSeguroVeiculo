@@ -9,5 +9,8 @@ namespace CalculoSeguroVeiculo.Service.Interfaces
         VeiculoGetDto EntityToDto(Veiculo veiculo);
         Veiculo DtoToEntity(VeiculoPostDto veiculo);
         IEnumerable<VeiculoGetDto> EntitiesToDtos(IEnumerable<Veiculo> veiculos);
+        void InclusaoVeiculo(VeiculoPostDto veiculoDto);
+        IEnumerable<VeiculoGetDto> GetAllDto();
+        VeiculoGetDto GetByIdDto(in int id);
     }
 }

@@ -29,8 +29,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<SeguroGetDto>), 200)]
         public IActionResult GetAll()
         {
-            var seguros = _seguroApplicationService.GetAll();
-            var result = _seguroApplicationService.EntitiesToDtos(seguros);
+            var result = _seguroApplicationService.GetAllDto();
 
             return Ok(result);
         }
@@ -39,8 +38,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         [ProducesResponseType(typeof(SeguroGetDto), 200)]
         public IActionResult GetById([FromRoute] int id)
         {
-            var seguro = _seguroApplicationService.GetById(id);
-            var result = _seguroApplicationService.EntityToDto(seguro);
+            var result = _seguroApplicationService.GetByIdDto(id);
 
             return Ok(result);
         }

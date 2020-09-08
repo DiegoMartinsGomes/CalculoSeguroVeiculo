@@ -20,8 +20,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] SeguradoPostDto seguradoDto)
         {
-            var segurado = _seguradoApplicationService.DtoToEntity(seguradoDto);
-            _seguradoApplicationService.Add(segurado);
+            _seguradoApplicationService.InclusaoSegurado(seguradoDto);
 
             return Ok();
         }
@@ -30,8 +29,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<SeguradoGetDto>), 200)]
         public IActionResult GetAll()
         {
-            var segurados = _seguradoApplicationService.GetAll();
-            var result = _seguradoApplicationService.EntitiesToDtos(segurados);
+            var result = _seguradoApplicationService.GetAllDto();
 
             return Ok(result);
         }
@@ -40,8 +38,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         [ProducesResponseType(typeof(SeguradoGetDto), 200)]
         public IActionResult GetById([FromRoute] int id)
         {
-            var segurado = _seguradoApplicationService.GetById(id);
-            var result = _seguradoApplicationService.EntityToDto(segurado);
+            var result = _seguradoApplicationService.GetByIdDto(id);
 
             return Ok(result);
         }

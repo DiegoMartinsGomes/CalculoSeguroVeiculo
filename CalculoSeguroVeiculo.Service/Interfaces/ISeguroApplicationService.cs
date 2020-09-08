@@ -12,7 +12,9 @@ namespace CalculoSeguroVeiculo.Service.Interfaces
         SeguroGetDto EntityToDto(Seguro seguro);
         IEnumerable<SeguroGetDto> EntitiesToDtos(IEnumerable<Seguro> seguros);
         decimal CalculoSeguroVeiculo(Veiculo veiculo);
-        RelatorioSeguroV1GetDto RelatorioV1(IEnumerable<SeguroGetDto> seguros);
-        RelatorioSeguroV2GetDto RelatorioV2(IEnumerable<SeguroGetDto> seguros);
+        RelatorioSeguroV1GetDto GerarRelatorioV1();
+        RelatorioSeguroV2GetDto GerarRelatorioV2();
+        IEnumerable<SeguroGetDto> GetAllDto();
+        SeguroGetDto GetByIdDto(int id);
     }
 }

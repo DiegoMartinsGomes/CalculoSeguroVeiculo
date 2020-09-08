@@ -145,10 +145,7 @@ namespace CalculoSeguroVeiculo.Test
         [Test]
         public void RelatorioV1IsNotNull()
         {
-            var seguros = _seguroApplicationService.GetAll();
-            var segurosDto = _seguroApplicationService.EntitiesToDtos(seguros);
-
-            var relatorio = _seguroApplicationService.RelatorioV1(segurosDto);
+            var relatorio = _seguroApplicationService.GerarRelatorioV1();
 
             Assert.IsNotNull(relatorio);
             Assert.IsNotNull(relatorio.Media);
@@ -158,10 +155,7 @@ namespace CalculoSeguroVeiculo.Test
         [Test]
         public void RelatorioV2IsNotNull()
         {
-            var seguros = _seguroApplicationService.GetAll();
-            var segurosDto = _seguroApplicationService.EntitiesToDtos(seguros);
-
-            var relatorio = _seguroApplicationService.RelatorioV2(segurosDto);
+            var relatorio = _seguroApplicationService.GerarRelatorioV2();
 
             Assert.IsNotNull(relatorio);
             Assert.IsNotNull(relatorio.Seguros);

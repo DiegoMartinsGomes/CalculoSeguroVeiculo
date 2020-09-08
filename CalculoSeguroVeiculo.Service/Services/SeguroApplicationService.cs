@@ -7,7 +7,6 @@ using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 
 namespace CalculoSeguroVeiculo.Service.Services
@@ -88,8 +87,9 @@ namespace CalculoSeguroVeiculo.Service.Services
             return valorSeguro;
         }
 
-        public RelatorioSeguroV1GetDto RelatorioV1(IEnumerable<SeguroGetDto> seguros)
+        public RelatorioSeguroV1GetDto GerarRelatorioV1()
         {
+            var seguros = _seguroRepository.GetAll();
             var media = seguros.Average(x => x.Valor);
 
             return new RelatorioSeguroV1GetDto()
@@ -98,16 +98,29 @@ namespace CalculoSeguroVeiculo.Service.Services
             };
         }
 
-        public RelatorioSeguroV2GetDto RelatorioV2(IEnumerable<SeguroGetDto> seguros)
+        public RelatorioSeguroV2GetDto GerarRelatorioV2()
         {
+            var seguros = _seguroRepository.GetAll();
             var media = seguros.Average(x => x.Valor);
 
             return new RelatorioSeguroV2GetDto()
             {
-                Seguros = seguros,
+                Seguros = EntitiesToDtos(seguros),
                 Mensagem = $"A média aritimética dos Seguros é de: {media}.",
                 Media = media
             };
+        }
+
+        public IEnumerable<SeguroGetDto> GetAllDto()
+        {
+            var seguros = GetAll();
+            return EntitiesToDtos(seguros);
+        }
+
+        public SeguroGetDto GetByIdDto(int id)
+        {
+            var seguro = GetById(id);
+            return EntityToDto(seguro);
         }
     }
 }

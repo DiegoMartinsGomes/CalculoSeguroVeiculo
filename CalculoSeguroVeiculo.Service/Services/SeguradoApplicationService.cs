@@ -4,6 +4,7 @@ using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace CalculoSeguroVeiculo.Service.Services
 {
@@ -35,6 +36,24 @@ namespace CalculoSeguroVeiculo.Service.Services
                 CPF = x.CPF,
                 Idade = x.Idade
             });
+        }
+
+        public void InclusaoSegurado(SeguradoPostDto seguradoDto)
+        {
+            var segurado = DtoToEntity(seguradoDto);
+            Add(segurado);
+        }
+
+        public IEnumerable<SeguradoGetDto> GetAllDto()
+        {
+            var segurados = GetAll();
+            return EntitiesToDtos(segurados);
+        }
+
+        public SeguradoGetDto GetByIdDto(in int id)
+        {
+            var segurado = GetById(id);
+            return EntityToDto(segurado);
         }
 
         public SeguradoGetDto EntityToDto(Segurado segurado)

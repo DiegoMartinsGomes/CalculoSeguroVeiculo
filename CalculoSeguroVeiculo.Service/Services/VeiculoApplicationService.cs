@@ -37,6 +37,24 @@ namespace CalculoSeguroVeiculo.Service.Services
             });
         }
 
+        public void InclusaoVeiculo(VeiculoPostDto veiculoDto)
+        {
+            var veiculo = DtoToEntity(veiculoDto);
+            Add(veiculo);
+        }
+
+        public IEnumerable<VeiculoGetDto> GetAllDto()
+        {
+            var veiculos = GetAll();
+            return EntitiesToDtos(veiculos);
+        }
+
+        public VeiculoGetDto GetByIdDto(in int id)
+        {
+            var veiculo = GetById(id);
+            return EntityToDto(veiculo);
+        }
+
         public VeiculoGetDto EntityToDto(Veiculo veiculo)
         {
             if (veiculo == null)
