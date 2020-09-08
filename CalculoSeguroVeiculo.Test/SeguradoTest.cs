@@ -21,7 +21,6 @@ namespace CalculoSeguroVeiculo.Test
         private readonly SeguradoApplicationService _seguradoApplicationService;
         private readonly Random _valorAleatorio;
 
-
         public SeguradoTest()
         {
             _context = new ReplyContext(new DbContextOptionsBuilder<ReplyContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
@@ -34,16 +33,16 @@ namespace CalculoSeguroVeiculo.Test
         }
 
         [Test]
-        public void AddPass()
+        public void InclusaoSeguradoPass()
         {
-            var segurado = new Segurado()
+            var segurado = new SeguradoPostDto()
             {
                 Nome = $"Nome{_valorAleatorio.Next()}",
                 CPF = $"{12345678910 * _valorAleatorio.Next()}".Substring(0, 11),
                 Idade = _valorAleatorio.Next(18, 100)
             };
 
-            _seguradoApplicationService.Add(segurado);
+            _seguradoApplicationService.InclusaoSegurado(segurado);
 
             Assert.IsNotNull(segurado.Nome);
             Assert.IsNotNull(segurado.CPF);
@@ -51,14 +50,16 @@ namespace CalculoSeguroVeiculo.Test
         }
 
         [Test]
-        public void AddFail()
+        public void InclusaoSeguradoFail()
         {
-            var segurado = new Segurado();
-            _seguradoApplicationService.Add(segurado);
-
-            Assert.IsNull(segurado.Nome);
-            Assert.IsNull(segurado.CPF);
-            Assert.IsFalse(segurado.Idade > 0);
+            try
+            {
+                _seguradoApplicationService.InclusaoSegurado(null);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Não foi possível Inserir o Segurado", e.Message);
+            }
         }
 
         [Test]
@@ -66,7 +67,6 @@ namespace CalculoSeguroVeiculo.Test
         {
             var id = 1;
             var veiculo = _seguradoApplicationService.GetById(id);
-
             Assert.NotNull(veiculo);
             Assert.NotNull(veiculo.Id = id);
         }
@@ -76,7 +76,6 @@ namespace CalculoSeguroVeiculo.Test
         {
             var id = 0;
             var segurado = _seguradoApplicationService.GetById(id);
-
             Assert.IsNull(segurado);
         }
 
@@ -84,7 +83,6 @@ namespace CalculoSeguroVeiculo.Test
         public void TestGetAllNotNull()
         {
             var segurados = _seguradoApplicationService.GetAll();
-
             Assert.NotNull(segurados);
         }
 
@@ -93,8 +91,45 @@ namespace CalculoSeguroVeiculo.Test
         {
             int id = 0;
             var segurados = _seguradoApplicationService.GetAll().Where(x => x.Id == id);
-
             Assert.IsEmpty(segurados);
+        }
+
+        [Test]
+        public void GetAllDtoIsNotNull()
+        {
+            var segurados = _seguradoApplicationService.GetAllDto();
+            foreach (var segurado in segurados)
+            {
+                Assert.IsNotNull(segurado);
+                Assert.IsNotNull(segurado.Id);
+                Assert.IsNotNull(segurado.Nome);
+                Assert.IsNotNull(segurado.CPF);
+                Assert.IsNotNull(segurado.Idade);
+            }
+        }
+
+        [Test]
+        public void GetByIdDtoNotNull()
+        {
+            var segurado = _seguradoApplicationService.GetByIdDto(1);
+            Assert.IsNotNull(segurado);
+            Assert.IsNotNull(segurado.Id);
+            Assert.IsNotNull(segurado.Nome);
+            Assert.IsNotNull(segurado.CPF);
+            Assert.IsNotNull(segurado.Idade);
+        }
+
+        [Test]
+        public void GetByIdDtoNull()
+        {
+            try
+            {
+                var segurado = _seguradoApplicationService.GetByIdDto(0);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Não foi possível localizar o Segurado", e.Message);
+            }
         }
     }
 }

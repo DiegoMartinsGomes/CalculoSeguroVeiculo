@@ -8,6 +8,6 @@ namespace CalculoSeguroVeiculo.Service.Interfaces
     {
         void InclusaoVeiculo(VeiculoPostDto veiculoDto);
         IEnumerable<VeiculoGetDto> GetAllDto();
-        VeiculoGetDto GetByIdDto(in int id);
+        VeiculoGetDto GetByIdDto(int id);
     }
 }

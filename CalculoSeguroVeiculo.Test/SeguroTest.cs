@@ -7,9 +7,7 @@ using CalculoSeguroVeiculo.Test.MockDados;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using CalculoSeguroVeiculo.Domain.Mappings;
 
 namespace CalculoSeguroVeiculo.Test
 {
@@ -43,7 +41,7 @@ namespace CalculoSeguroVeiculo.Test
         }
 
         [Test]
-        public void AddPass()
+        public void InclusaoSeguroPass()
         {
             var seguro = new SeguroPostDto()
             {
@@ -53,18 +51,22 @@ namespace CalculoSeguroVeiculo.Test
 
             _seguroApplicationService.InclusaoSeguro(seguro);
 
+            Assert.IsNotNull(seguro);
             Assert.IsTrue(seguro.IdSegurado > 0);
             Assert.IsTrue(seguro.IdVeiculo > 0);
         }
 
         [Test]
-        public void AddFail()
+        public void InclusaoSeguroFail()
         {
-            var seguro = new Seguro();
-            _seguroApplicationService.Add(seguro);
-
-            Assert.IsFalse(seguro.IdSegurado > 0);
-            Assert.IsFalse(seguro.IdVeiculo > 0);
+            try
+            {
+                _seguroApplicationService.InclusaoSeguro(null);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Não foi possível Inserir o Seguro.", e.Message);
+            }
         }
 
         [Test]
@@ -114,6 +116,19 @@ namespace CalculoSeguroVeiculo.Test
         }
 
         [Test]
+        public void CalculoSeguroVeiculoIsNull()
+        {
+            try
+            {
+                _seguroApplicationService.CalculoSeguroVeiculo(null);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Não foi possível Calcular o Seguro.", e.Message);
+            }
+        }
+
+        [Test]
         public void RelatorioV1IsNotNull()
         {
             var relatorio = _seguroApplicationService.GerarRelatorioV1();
@@ -134,6 +149,85 @@ namespace CalculoSeguroVeiculo.Test
             Assert.IsTrue(relatorio.Mensagem.Contains("A média aritimética dos Seguros é de:"));
             Assert.IsNotNull(relatorio.Media);
             Assert.IsTrue(relatorio.Media > 0);
+        }
+
+        [Test]
+        public void GetAllDtoIsNotNull()
+        {
+            var seguros = _seguroApplicationService.GetAllDto();
+
+            Assert.IsNotNull(seguros);
+
+            foreach (var seguro in seguros)
+            {
+                Assert.IsNotNull(seguro);
+                Assert.IsNotNull(seguro.Id);
+                Assert.IsNotNull(seguro.IdSegurado);
+                Assert.IsNotNull(seguro.IdVeiculo);
+                Assert.IsNotNull(seguro.DataCalculo);
+                Assert.IsNotNull(seguro.Valor);
+                Assert.IsNotNull(seguro.Segurado);
+                Assert.IsNotNull(seguro.Segurado.Id);
+                Assert.IsNotNull(seguro.Segurado.Nome);
+                Assert.IsNotNull(seguro.Segurado.CPF);
+                Assert.IsNotNull(seguro.Segurado.Idade);
+                Assert.IsNotNull(seguro.Veiculo);
+                Assert.IsNotNull(seguro.Veiculo.Id);
+                Assert.IsNotNull(seguro.Veiculo.Marca);
+                Assert.IsNotNull(seguro.Veiculo.Modelo);
+                Assert.IsNotNull(seguro.Veiculo.Valor);
+            }
+        }
+
+        [Test]
+        public void GetByIdDtoIsNotNull()
+        {
+            var seguro = _seguroApplicationService.GetByIdDto(1);
+
+            Assert.IsNotNull(seguro);
+            Assert.IsNotNull(seguro.Segurado);
+            Assert.IsNotNull(seguro.Veiculo);
+        }
+
+        [Test]
+        public void GetByIdDtoIsNull()
+        {
+            try
+            {
+                _seguroApplicationService.GetByIdDto(0);
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Não foi possível localizar o Seguro.", e.Message);
+            }
+        }
+
+        [Test]
+        public void GetAllRelacionadoIsNotNull()
+        {
+            var seguros = _seguroApplicationService.GetAllRelacionado();
+
+            Assert.IsNotNull(seguros);
+
+            foreach (var seguro in seguros)
+            {
+                Assert.IsNotNull(seguro);
+                Assert.IsNotNull(seguro.Id);
+                Assert.IsNotNull(seguro.IdSegurado);
+                Assert.IsNotNull(seguro.IdVeiculo);
+                Assert.IsNotNull(seguro.DataCalculo);
+                Assert.IsNotNull(seguro.Valor);
+                Assert.IsNotNull(seguro.Segurado);
+                Assert.IsNotNull(seguro.Segurado.Id);
+                Assert.IsNotNull(seguro.Segurado.Nome);
+                Assert.IsNotNull(seguro.Segurado.CPF);
+                Assert.IsNotNull(seguro.Segurado.Idade);
+                Assert.IsNotNull(seguro.Veiculo);
+                Assert.IsNotNull(seguro.Veiculo.Id);
+                Assert.IsNotNull(seguro.Veiculo.Marca);
+                Assert.IsNotNull(seguro.Veiculo.Modelo);
+                Assert.IsNotNull(seguro.Veiculo.Valor);
+            }
         }
     }
 }

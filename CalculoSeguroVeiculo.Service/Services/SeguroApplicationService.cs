@@ -30,6 +30,9 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public void InclusaoSeguro(SeguroPostDto seguroDto)
         {
+            if (seguroDto == null)
+                throw new Exception("Não foi possível Inserir o Seguro.");
+
             var veiculo = _veiculoApplicationService.GetById(seguroDto.IdVeiculo);
             var valorSeguro = CalculoSeguroVeiculo(veiculo);
             var seguro = new Seguro()
@@ -44,6 +47,9 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public decimal CalculoSeguroVeiculo(Veiculo veiculo)
         {
+            if (veiculo == null)
+                throw new Exception("Não foi possível Calcular o Seguro.");
+
             var valorVeiculo = Convert.ToDouble(veiculo.Valor);
             var taxaRisco = ((valorVeiculo * TaxaCalculo.ValorCinco) / (TaxaCalculo.ValorDois * valorVeiculo));
             var premioRisco = (taxaRisco * valorVeiculo);
@@ -83,10 +89,21 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public SeguroGetDto GetByIdDto(int id)
         {
-            var seguro = GetById(id);
-            var segurado = _seguradoApplicationService.GetById(seguro.IdSegurado);
-            var veiculo = _veiculoApplicationService.GetById(seguro.IdVeiculo);
-            return Mapping.ToSeguroGetDto(seguro, segurado, veiculo);
+            var seguro = _seguroRepository.GetAll()
+                .Where(x => x.Id == id)
+                .Select(x => new Seguro()
+                {
+                    Id = x.Id,
+                    IdSegurado = x.IdSegurado,
+                    IdVeiculo = x.IdVeiculo,
+                    DataCalculo = x.DataCalculo,
+                    Valor = x.Valor,
+                    Segurado = x.Segurado,
+                    Veiculo = x.Veiculo
+                }).FirstOrDefault();
+            if (seguro == null)
+                throw new Exception("Não foi possível localizar o Seguro.");
+            return Mapping.ToSeguroGetDto(seguro, seguro.Segurado, seguro.Veiculo);
         }
 
         public IEnumerable<Seguro> GetAllRelacionado()

@@ -1,4 +1,5 @@
-﻿using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
+﻿using System;
+using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
 using CalculoSeguroVeiculo.Domain.Mappings;
 using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
@@ -18,6 +19,8 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public void InclusaoVeiculo(VeiculoPostDto veiculoDto)
         {
+            if (veiculoDto == null)
+                throw new Exception("Não foi possível inserir o Veiculo.");
             var veiculo = Mapping.ToVeiculo(veiculoDto);
             Add(veiculo);
         }
@@ -28,7 +31,7 @@ namespace CalculoSeguroVeiculo.Service.Services
             return Mapping.ToVeiculosGetDto(veiculos);
         }
 
-        public VeiculoGetDto GetByIdDto(in int id)
+        public VeiculoGetDto GetByIdDto(int id)
         {
             var veiculo = GetById(id);
             return Mapping.ToVeiculoGetDto(veiculo);
