@@ -45,4 +45,5 @@ Recursos de apoio
 		• Código Fonte em repositório Git (GitHub ou qualquer outro que possa compartilhar o projeto.)
 		
 		
+• Durante o desenvolvimento do projeto foi identificado problemas de compatibilidade entre pacotes Oracle.EntityFrameworkCore e Microsoft.EntityFrameworkCore.Relational, que ocasionou a não utilização do banco de dados Oracle, para poder minimizar o problema o projeto foi desenvolvido utilizando o banco de dados SQL Server. 		
 		
