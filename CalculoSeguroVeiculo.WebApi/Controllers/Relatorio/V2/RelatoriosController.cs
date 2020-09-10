@@ -1,4 +1,5 @@
-﻿using CalculoSeguroVeiculo.DataTransferObject.Relatorio.V1;
+﻿using CalculoSeguroVeiculo.Crosscutting.RespostaApi;
+using CalculoSeguroVeiculo.DataTransferObject.Relatorio.V1;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers.Relatorio.V2
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(RelatorioSeguroV1GetDto), 200)]
+        [ProducesResponseType(typeof(Resposta<RelatorioSeguroV1GetDto>), 200)]
         public IActionResult GetReport()
         {
             var result = _seguroApplicationService.GerarRelatorioV2();

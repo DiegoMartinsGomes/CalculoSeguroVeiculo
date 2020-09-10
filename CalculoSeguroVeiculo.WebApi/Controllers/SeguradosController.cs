@@ -2,6 +2,7 @@
 using CalculoSeguroVeiculo.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using CalculoSeguroVeiculo.Crosscutting.RespostaApi;
 
 namespace CalculoSeguroVeiculo.WebApi.Controllers
 {
@@ -18,14 +19,15 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(Resposta), 200)]
         public IActionResult Post([FromBody] SeguradoPostDto seguradoDto)
         {
-            _seguradoApplicationService.InclusaoSegurado(seguradoDto);
-            return Ok();
+            var result = _seguradoApplicationService.InclusaoSegurado(seguradoDto);
+            return Ok(result);
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<SeguradoGetDto>), 200)]
+        [ProducesResponseType(typeof(Resposta<IEnumerable<SeguradoGetDto>>), 200)]
         public IActionResult GetAll()
         {
             var result = _seguradoApplicationService.GetAllDto();
@@ -33,7 +35,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(SeguradoGetDto), 200)]
+        [ProducesResponseType(typeof(Resposta<SeguradoGetDto>), 200)]
         public IActionResult GetById([FromRoute] int id)
         {
             var result = _seguradoApplicationService.GetByIdDto(id);

@@ -1,4 +1,5 @@
-﻿using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
+﻿using CalculoSeguroVeiculo.Crosscutting.Enums;
+using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
 using CalculoSeguroVeiculo.Infrastructure.Context;
 using CalculoSeguroVeiculo.Infrastructure.Repository;
 using CalculoSeguroVeiculo.Infrastructure.UnitOfWork;
@@ -24,7 +25,6 @@ namespace CalculoSeguroVeiculo.Test
             _context = new ReplyContext(new DbContextOptionsBuilder<ReplyContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
             _context.Veiculo.AddRange(VeiculoMock.Dados());
             _context.SaveChanges();
-
             _veiculoRepository = new VeiculoRepository(_context);
             _veiculoUnitOfWork = new VeiculoUnitOfWork(_context, _veiculoRepository);
             _veiculoApplicationService = new VeiculoApplicationService(_veiculoUnitOfWork);
@@ -40,7 +40,6 @@ namespace CalculoSeguroVeiculo.Test
                 Modelo = $"Modelo{_valorAleatorio.Next()}",
                 Valor = Convert.ToDecimal(_valorAleatorio.NextDouble())
             };
-
             _veiculoApplicationService.InclusaoVeiculo(veiculo);
             Assert.IsNotNull(veiculo.Marca);
             Assert.IsNotNull(veiculo.Modelo);
@@ -50,22 +49,16 @@ namespace CalculoSeguroVeiculo.Test
         [Test]
         public void InclusaoSeguroFail()
         {
-            try
-            {
-                _veiculoApplicationService.InclusaoVeiculo(null);
-            }
-            catch (Exception e)
-            {
-                Assert.AreEqual("Não foi possível inserir o Veiculo.", e.Message);
-            }
+            var resposta = _veiculoApplicationService.InclusaoVeiculo(null);
+            Assert.AreEqual(resposta.Status, StatusResposta.Erro);
         }
 
         [Test]
         public void GetAllDtoIsNotNull()
         {
-            var veiculos = _veiculoApplicationService.GetAllDto();
-            Assert.IsNotNull((veiculos));
-            foreach (var veiculo in veiculos)
+            var resposta = _veiculoApplicationService.GetAllDto();
+            Assert.IsNotNull((resposta.Resultado));
+            foreach (var veiculo in resposta.Resultado)
             {
                 Assert.IsNotNull(veiculo);
                 Assert.IsNotNull(veiculo.Id);
@@ -78,12 +71,12 @@ namespace CalculoSeguroVeiculo.Test
         [Test]
         public void GetByIdDtoIsNotNull()
         {
-            var veiculo = _veiculoApplicationService.GetByIdDto(1);
-            Assert.IsNotNull(veiculo);
-            Assert.IsNotNull(veiculo.Id);
-            Assert.IsNotNull(veiculo.Marca);
-            Assert.IsNotNull(veiculo.Modelo);
-            Assert.IsNotNull(veiculo.Valor);
+            var resposta = _veiculoApplicationService.GetByIdDto(1);
+            Assert.IsNotNull(resposta.Resultado);
+            Assert.IsNotNull(resposta.Resultado.Id);
+            Assert.IsNotNull(resposta.Resultado.Marca);
+            Assert.IsNotNull(resposta.Resultado.Modelo);
+            Assert.IsNotNull(resposta.Resultado.Valor);
         }
     }
 }

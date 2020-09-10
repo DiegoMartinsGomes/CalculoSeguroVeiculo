@@ -1,4 +1,5 @@
-﻿using CalculoSeguroVeiculo.DataTransferObject.SeguradoDto;
+﻿using CalculoSeguroVeiculo.Crosscutting.RespostaApi;
+using CalculoSeguroVeiculo.DataTransferObject.SeguradoDto;
 using CalculoSeguroVeiculo.Domain.Mappings;
 using CalculoSeguroVeiculo.Infrastructure.UnitOfWork.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
@@ -16,26 +17,49 @@ namespace CalculoSeguroVeiculo.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        public void InclusaoSegurado(SeguradoPostDto seguradoDto)
+        public Resposta InclusaoSegurado(SeguradoPostDto seguradoDto)
         {
-            if (seguradoDto == null)
-                throw new Exception("Não foi possível Inserir o Segurado");
-            var segurado = Mapping.ToSegurado(seguradoDto);
-            _unitOfWork.SeguradoRepository().Add(segurado);
+            var resposta = new Resposta();
+            try
+            {
+                var segurado = Mapping.ToSegurado(seguradoDto);
+                _unitOfWork.SeguradoRepository().Add(segurado);
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
         }
 
-        public IEnumerable<SeguradoGetDto> GetAllDto()
+        public Resposta<IEnumerable<SeguradoGetDto>> GetAllDto()
         {
-            var segurados = _unitOfWork.SeguradoRepository().GetAll();
-            return Mapping.ToSeguradosGetDto(segurados);
+            var resposta = new Resposta<IEnumerable<SeguradoGetDto>>();
+            try
+            {
+                var segurados = _unitOfWork.SeguradoRepository().GetAll();
+                resposta.Resultado = Mapping.ToSeguradosGetDto(segurados);
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
         }
 
-        public SeguradoGetDto GetByIdDto(int id)
+        public Resposta<SeguradoGetDto> GetByIdDto(int id)
         {
-            var segurado = _unitOfWork.SeguradoRepository().GetById(id);
-            if (segurado == null)
-                throw new Exception("Não foi possível localizar o Segurado");
-            return Mapping.ToSeguradoGetDto(segurado);
+            var resposta = new Resposta<SeguradoGetDto>();
+            try
+            {
+                var segurado = _unitOfWork.SeguradoRepository().GetById(id);
+                resposta.Resultado = Mapping.ToSeguradoGetDto(segurado);
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
         }
     }
 }

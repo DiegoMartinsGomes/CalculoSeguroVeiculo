@@ -1,4 +1,5 @@
-﻿using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
+﻿using CalculoSeguroVeiculo.Crosscutting.RespostaApi;
+using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
 using CalculoSeguroVeiculo.Domain.Mappings;
 using CalculoSeguroVeiculo.Infrastructure.UnitOfWork.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
@@ -16,24 +17,49 @@ namespace CalculoSeguroVeiculo.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        public void InclusaoVeiculo(VeiculoPostDto veiculoDto)
+        public Resposta InclusaoVeiculo(VeiculoPostDto veiculoDto)
         {
-            if (veiculoDto == null)
-                throw new Exception("Não foi possível inserir o Veiculo.");
-            var veiculo = Mapping.ToVeiculo(veiculoDto);
-            _unitOfWork.VeiculoRepository().Add(veiculo);
+            var resposta = new Resposta();
+            try
+            {
+                var veiculo = Mapping.ToVeiculo(veiculoDto);
+                _unitOfWork.VeiculoRepository().Add(veiculo);
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
         }
 
-        public IEnumerable<VeiculoGetDto> GetAllDto()
+        public Resposta<IEnumerable<VeiculoGetDto>> GetAllDto()
         {
-            var veiculos = _unitOfWork.VeiculoRepository().GetAll();
-            return Mapping.ToVeiculosGetDto(veiculos);
+            var resposta = new Resposta<IEnumerable<VeiculoGetDto>>();
+            try
+            {
+                var veiculos = _unitOfWork.VeiculoRepository().GetAll();
+                resposta.Resultado = Mapping.ToVeiculosGetDto(veiculos);
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
         }
 
-        public VeiculoGetDto GetByIdDto(int id)
+        public Resposta<VeiculoGetDto> GetByIdDto(int id)
         {
-            var veiculo = _unitOfWork.VeiculoRepository().GetById(id);
-            return Mapping.ToVeiculoGetDto(veiculo);
+            var resposta = new Resposta<VeiculoGetDto>();
+            try
+            {
+                var veiculo = _unitOfWork.VeiculoRepository().GetById(id);
+                resposta.Resultado = Mapping.ToVeiculoGetDto(veiculo);
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
         }
     }
 }

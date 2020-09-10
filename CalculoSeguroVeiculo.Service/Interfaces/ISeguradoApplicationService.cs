@@ -1,12 +1,13 @@
 ﻿using CalculoSeguroVeiculo.DataTransferObject.SeguradoDto;
 using System.Collections.Generic;
+using CalculoSeguroVeiculo.Crosscutting.RespostaApi;
 
 namespace CalculoSeguroVeiculo.Service.Interfaces
 {
     public interface ISeguradoApplicationService
     {
-        void InclusaoSegurado(SeguradoPostDto seguradoDto);
-        IEnumerable<SeguradoGetDto> GetAllDto();
-        SeguradoGetDto GetByIdDto(int id);
+        Resposta InclusaoSegurado(SeguradoPostDto seguradoDto);
+        Resposta<IEnumerable<SeguradoGetDto>> GetAllDto();
+        Resposta<SeguradoGetDto> GetByIdDto(int id);
     }
 }

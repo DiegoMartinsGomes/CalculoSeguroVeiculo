@@ -1,4 +1,5 @@
 ﻿using CalculoSeguroVeiculo.Crosscutting.Estatico;
+using CalculoSeguroVeiculo.Crosscutting.RespostaApi;
 using CalculoSeguroVeiculo.DataTransferObject.Relatorio.V1;
 using CalculoSeguroVeiculo.DataTransferObject.Relatorio.V2;
 using CalculoSeguroVeiculo.DataTransferObject.SeguroDto;
@@ -21,84 +22,111 @@ namespace CalculoSeguroVeiculo.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        public void InclusaoSeguro(SeguroPostDto seguroDto)
+        public Resposta InclusaoSeguro(SeguroPostDto seguroDto)
         {
-            if (seguroDto == null)
-                throw new Exception("Não foi possível Inserir o Seguro.");
-            var veiculo = _unitOfWork.VeiculoRepository().GetById(seguroDto.IdVeiculo);
-            var valorSeguro = CalculoSeguroVeiculo(veiculo);
-            var seguro = new Seguro()
+            var resposta = new Resposta();
+            try
             {
-                IdSegurado = seguroDto.IdSegurado,
-                IdVeiculo = seguroDto.IdVeiculo,
-                DataCalculo = DateTime.Now,
-                Valor = valorSeguro,
-            };
-            _unitOfWork.SeguroRepository().Add(seguro);
-        }
-
-        public decimal CalculoSeguroVeiculo(Veiculo veiculo)
-        {
-            if (veiculo == null)
-                throw new Exception("Não foi possível Calcular o Seguro.");
-
-            var valorVeiculo = Convert.ToDouble(veiculo.Valor);
-            var taxaRisco = ((valorVeiculo * TaxaCalculo.ValorCinco) / (TaxaCalculo.ValorDois * valorVeiculo));
-            var premioRisco = (taxaRisco * valorVeiculo);
-            var premioPuro = (premioRisco * (TaxaCalculo.ValorUm + PercentualCalculo.MargemSeguranca));
-            var premioComercial = (PercentualCalculo.Lucro * premioPuro);
-            var valorSeguro = Convert.ToDecimal(Math.Round(((premioComercial + premioPuro) / 100), 2, MidpointRounding.ToZero));
-            return valorSeguro;
-        }
-
-        public RelatorioSeguroV1GetDto GerarRelatorioV1()
-        {
-            var seguros = GetAllRelacionado();
-            var media = seguros.Average(x => x.Valor);
-            return new RelatorioSeguroV1GetDto()
-            {
-                Media = media
-            };
-        }
-
-        public RelatorioSeguroV2GetDto GerarRelatorioV2()
-        {
-            var seguros = GetAllRelacionado();
-            var media = seguros.Average(x => x.Valor);
-            return new RelatorioSeguroV2GetDto()
-            {
-                Seguros = Mapping.ToSegurosGetDto(seguros),
-                Mensagem = $"A média aritimética dos Seguros é de: {media}.",
-                Media = media
-            };
-        }
-
-        public IEnumerable<SeguroGetDto> GetAllDto()
-        {
-            var seguros = GetAllRelacionado();
-            return Mapping.ToSegurosGetDto(seguros);
-        }
-
-        public SeguroGetDto GetByIdDto(int id)
-        {
-            var seguro = _unitOfWork.SeguroRepository().GetAll()
-                .Where(x => x.Id == id)
-                .Select(x => new Seguro()
+                var veiculo = _unitOfWork.VeiculoRepository().GetById(seguroDto.IdVeiculo);
+                var valorSeguro = CalculoSeguroVeiculo(veiculo);
+                var seguro = new Seguro()
                 {
-                    Id = x.Id,
-                    IdSegurado = x.IdSegurado,
-                    IdVeiculo = x.IdVeiculo,
-                    DataCalculo = x.DataCalculo,
-                    Valor = x.Valor,
-                    Segurado = x.Segurado,
-                    Veiculo = x.Veiculo
-                }).FirstOrDefault();
-            if (seguro == null)
-                throw new Exception("Não foi possível localizar o Seguro.");
-            return Mapping.ToSeguroGetDto(seguro, seguro.Segurado, seguro.Veiculo);
+                    IdSegurado = seguroDto.IdSegurado,
+                    IdVeiculo = seguroDto.IdVeiculo,
+                    DataCalculo = DateTime.Now,
+                    Valor = valorSeguro,
+                };
+                _unitOfWork.SeguroRepository().Add(seguro);
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
         }
 
-        public IEnumerable<Seguro> GetAllRelacionado()
+        public Resposta<RelatorioSeguroV1GetDto> GerarRelatorioV1()
+        {
+            var resposta = new Resposta<RelatorioSeguroV1GetDto>();
+            try
+            {
+                var seguros = GetAllRelacionado();
+                var media = seguros.Average(x => x.Valor);
+                resposta.Resultado = new RelatorioSeguroV1GetDto()
+                {
+                    Media = media
+                };
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
+        }
+
+        public Resposta<RelatorioSeguroV2GetDto> GerarRelatorioV2()
+        {
+            var resposta = new Resposta<RelatorioSeguroV2GetDto>();
+            try
+            {
+                var seguros = GetAllRelacionado();
+                var media = seguros.Average(x => x.Valor);
+                resposta.Resultado = new RelatorioSeguroV2GetDto()
+                {
+                    Seguros = Mapping.ToSegurosGetDto(seguros),
+                    Mensagem = $"A média aritimética dos Seguros é de: {media}.",
+                    Media = media
+                };
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
+        }
+
+        public Resposta<IEnumerable<SeguroGetDto>> GetAllDto()
+        {
+            var resposta = new Resposta<IEnumerable<SeguroGetDto>>();
+            try
+            {
+                var seguros = GetAllRelacionado();
+                resposta.Resultado = Mapping.ToSegurosGetDto(seguros);
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
+        }
+
+        public Resposta<SeguroGetDto> GetByIdDto(int id)
+        {
+            var resposta = new Resposta<SeguroGetDto>();
+            try
+            {
+                var seguro = _unitOfWork.SeguroRepository().GetAll()
+                    .Where(x => x.Id == id)
+                    .Select(x => new Seguro()
+                    {
+                        Id = x.Id,
+                        IdSegurado = x.IdSegurado,
+                        IdVeiculo = x.IdVeiculo,
+                        DataCalculo = x.DataCalculo,
+                        Valor = x.Valor,
+                        Segurado = x.Segurado,
+                        Veiculo = x.Veiculo
+                    }).FirstOrDefault();
+                resposta.Resultado = Mapping.ToSeguroGetDto(seguro, seguro.Segurado, seguro.Veiculo);
+            }
+            catch (Exception e)
+            {
+                RespostaErro.Montar(resposta, e);
+            }
+            return resposta;
+        }
+
+        private IEnumerable<Seguro> GetAllRelacionado()
         {
             var seguros = _unitOfWork.SeguroRepository().GetAll()
                 .Select(x => new Seguro()
@@ -112,6 +140,20 @@ namespace CalculoSeguroVeiculo.Service.Services
                     Veiculo = x.Veiculo
                 });
             return seguros;
+        }
+
+        private decimal CalculoSeguroVeiculo(Veiculo veiculo)
+        {
+            if (veiculo == null)
+                throw new Exception("Não foi possível Calcular o Seguro.");
+
+            var valorVeiculo = Convert.ToDouble(veiculo.Valor);
+            var taxaRisco = ((valorVeiculo * TaxaCalculo.ValorCinco) / (TaxaCalculo.ValorDois * valorVeiculo));
+            var premioRisco = (taxaRisco * valorVeiculo);
+            var premioPuro = (premioRisco * (TaxaCalculo.ValorUm + PercentualCalculo.MargemSeguranca));
+            var premioComercial = (PercentualCalculo.Lucro * premioPuro);
+            var valorSeguro = Convert.ToDecimal(Math.Round(((premioComercial + premioPuro) / 100), 2, MidpointRounding.ToZero));
+            return valorSeguro;
         }
     }
 }
