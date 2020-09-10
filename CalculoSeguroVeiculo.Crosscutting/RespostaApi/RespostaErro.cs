@@ -1,5 +1,5 @@
-﻿using System;
-using CalculoSeguroVeiculo.Crosscutting.Enums;
+﻿using CalculoSeguroVeiculo.Crosscutting.Enums;
+using System;
 
 namespace CalculoSeguroVeiculo.Crosscutting.RespostaApi
 {

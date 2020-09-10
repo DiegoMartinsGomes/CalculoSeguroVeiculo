@@ -14,6 +14,12 @@ namespace CalculoSeguroVeiculo.WebApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -22,7 +28,9 @@ namespace CalculoSeguroVeiculo.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddVersioning();
-            services.AddMvc();
+
+            NewtonsoftJsonMvcBuilderExtensions.AddNewtonsoftJson(services.AddMvc(), options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             ConfigureBindingsDependencyInjection.RegisterBindings(services, Configuration);
 

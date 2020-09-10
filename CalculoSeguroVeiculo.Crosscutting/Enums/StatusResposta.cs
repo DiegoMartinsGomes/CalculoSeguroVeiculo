@@ -1,8 +1,13 @@
-﻿namespace CalculoSeguroVeiculo.Crosscutting.Enums
+﻿using System.ComponentModel;
+
+namespace CalculoSeguroVeiculo.Crosscutting.Enums
 {
     public enum StatusResposta
     {
-        Sucesso,
-        Erro
+        [Description("Erro")]
+        Erro = 0,
+        [Description("Sucesso")]
+        Sucesso = 1,
+
     }
 }

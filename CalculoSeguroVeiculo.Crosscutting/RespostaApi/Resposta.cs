@@ -1,5 +1,6 @@
-﻿using System;
-using CalculoSeguroVeiculo.Crosscutting.Enums;
+﻿using CalculoSeguroVeiculo.Crosscutting.Enums;
+using CalculoSeguroVeiculo.Crosscutting.Helpers;
+using System;
 
 namespace CalculoSeguroVeiculo.Crosscutting.RespostaApi
 {
@@ -13,5 +14,12 @@ namespace CalculoSeguroVeiculo.Crosscutting.RespostaApi
         public StatusResposta Status { get; set; }
         public string Mensagem { get; set; }
         public Exception Exception { get; set; }
+        public string DescricaoStatus
+        {
+            get
+            {
+                return EnumHelper.GetDescription<StatusResposta>(Status);
+            }
+        }
     }
 }

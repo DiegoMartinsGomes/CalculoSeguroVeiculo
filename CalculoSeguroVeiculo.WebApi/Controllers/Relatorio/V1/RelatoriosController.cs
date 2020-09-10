@@ -19,6 +19,7 @@ namespace CalculoSeguroVeiculo.WebApi.Controllers.Relatorio.V1
 
         [HttpGet]
         [ProducesResponseType(typeof(Resposta<RelatorioSeguroV1GetDto>), 200)]
+        [ProducesResponseType(typeof(Resposta<RelatorioSeguroV1GetDto>), 500)]
         public IActionResult GetReport()
         {
             var result = _seguroApplicationService.GerarRelatorioV1();
