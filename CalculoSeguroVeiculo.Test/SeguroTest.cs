@@ -1,7 +1,7 @@
 ﻿using CalculoSeguroVeiculo.DataTransferObject.SeguroDto;
-using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Context;
 using CalculoSeguroVeiculo.Infrastructure.Repository;
+using CalculoSeguroVeiculo.Infrastructure.UnitOfWork;
 using CalculoSeguroVeiculo.Service.Services;
 using CalculoSeguroVeiculo.Test.MockDados;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +16,10 @@ namespace CalculoSeguroVeiculo.Test
     {
         private readonly ReplyContext _context;
         private readonly SeguroRepository _seguroRepository;
+        private readonly SeguroUnitOfWork _seguroUnitOfWork;
         private readonly SeguradoRepository _seguradoRepository;
         private readonly VeiculoRepository _veiculoRepository;
         private readonly SeguroApplicationService _seguroApplicationService;
-        private readonly SeguradoApplicationService _seguradoApplicationService;
-        private readonly VeiculoApplicationService _veiculoApplicationService;
-        private readonly Random _valorAleatorio;
 
         public SeguroTest()
         {
@@ -32,12 +30,8 @@ namespace CalculoSeguroVeiculo.Test
             _seguroRepository = new SeguroRepository(_context);
             _seguradoRepository = new SeguradoRepository(_context);
             _veiculoRepository = new VeiculoRepository(_context);
-
-            _seguradoApplicationService = new SeguradoApplicationService(_seguradoRepository);
-            _veiculoApplicationService = new VeiculoApplicationService(_veiculoRepository);
-
-            _seguroApplicationService = new SeguroApplicationService(_seguroRepository, _seguradoApplicationService, _veiculoApplicationService);
-            _valorAleatorio = new Random();
+            _seguroUnitOfWork = new SeguroUnitOfWork(_context, _seguroRepository, _seguradoRepository, _veiculoRepository);
+            _seguroApplicationService = new SeguroApplicationService(_seguroUnitOfWork);
         }
 
         [Test]
@@ -67,42 +61,6 @@ namespace CalculoSeguroVeiculo.Test
             {
                 Assert.AreEqual("Não foi possível Inserir o Seguro.", e.Message);
             }
-        }
-
-        [Test]
-        public void TestGetIdNotNull()
-        {
-            var id = 1;
-            var veiculo = _seguroApplicationService.GetById(id);
-
-            Assert.NotNull(veiculo);
-            Assert.NotNull(veiculo.Id = id);
-        }
-
-        [Test]
-        public void TestGetIdIsNull()
-        {
-            var id = 0;
-            var segurado = _seguroApplicationService.GetById(id);
-
-            Assert.IsNull(segurado);
-        }
-
-        [Test]
-        public void TestGetAllNotNull()
-        {
-            var segurados = _seguroApplicationService.GetAll();
-
-            Assert.NotNull(segurados);
-        }
-
-        [Test]
-        public void TestGetAllIsNull()
-        {
-            int id = 0;
-            var segurados = _seguroApplicationService.GetAll().Where(x => x.Id == id);
-
-            Assert.IsEmpty(segurados);
         }
 
         [Test]

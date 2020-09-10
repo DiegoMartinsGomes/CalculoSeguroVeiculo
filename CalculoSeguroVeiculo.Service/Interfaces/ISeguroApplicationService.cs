@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace CalculoSeguroVeiculo.Service.Interfaces
 {
-    public interface ISeguroApplicationService : IApplicationService<Seguro>
+    public interface ISeguroApplicationService
     {
         void InclusaoSeguro(SeguroPostDto seguro);
         decimal CalculoSeguroVeiculo(Veiculo veiculo);

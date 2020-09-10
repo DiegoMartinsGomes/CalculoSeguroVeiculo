@@ -1,10 +1,9 @@
 ﻿using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
-using CalculoSeguroVeiculo.Domain.Models;
 using System.Collections.Generic;
 
 namespace CalculoSeguroVeiculo.Service.Interfaces
 {
-    public interface IVeiculoApplicationService : IApplicationService<Veiculo>
+    public interface IVeiculoApplicationService
     {
         void InclusaoVeiculo(VeiculoPostDto veiculoDto);
         IEnumerable<VeiculoGetDto> GetAllDto();

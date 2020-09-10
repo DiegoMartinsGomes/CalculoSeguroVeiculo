@@ -1,5 +1,6 @@
 ﻿using CalculoSeguroVeiculo.DependencyInjection.ApplicationServiceInjection;
 using CalculoSeguroVeiculo.DependencyInjection.RepositoryInjection;
+using CalculoSeguroVeiculo.DependencyInjection.UnitOfWorkInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,7 @@ namespace CalculoSeguroVeiculo.DependencyInjection
         {
             ConfigureBindingsDatabaseContext.RegisterBindings(services, configuration);
             ConfigureBindingsApplicationService.RegisterBindings(services);
+            ConfigureBindingsUnitOfWork.RegisterBindings(services);
             ConfigureBindingsRepository.RegisterBindings(services);
         }
     }

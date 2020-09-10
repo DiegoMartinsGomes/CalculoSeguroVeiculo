@@ -1,15 +1,12 @@
 ﻿using CalculoSeguroVeiculo.DataTransferObject.SeguradoDto;
-using CalculoSeguroVeiculo.Domain.Models;
 using CalculoSeguroVeiculo.Infrastructure.Context;
 using CalculoSeguroVeiculo.Infrastructure.Repository;
+using CalculoSeguroVeiculo.Infrastructure.UnitOfWork;
 using CalculoSeguroVeiculo.Service.Services;
 using CalculoSeguroVeiculo.Test.MockDados;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using CalculoSeguroVeiculo.Domain.Mappings;
 
 namespace CalculoSeguroVeiculo.Test
 {
@@ -18,6 +15,7 @@ namespace CalculoSeguroVeiculo.Test
     {
         private readonly ReplyContext _context;
         private readonly SeguradoRepository _seguradoRepository;
+        private readonly SeguradoUnitOfWork _seguradoUnitOfWork;
         private readonly SeguradoApplicationService _seguradoApplicationService;
         private readonly Random _valorAleatorio;
 
@@ -28,7 +26,8 @@ namespace CalculoSeguroVeiculo.Test
             _context.SaveChanges();
 
             _seguradoRepository = new SeguradoRepository(_context);
-            _seguradoApplicationService = new SeguradoApplicationService(_seguradoRepository);
+            _seguradoUnitOfWork = new SeguradoUnitOfWork(_context, _seguradoRepository);
+            _seguradoApplicationService = new SeguradoApplicationService(_seguradoUnitOfWork);
             _valorAleatorio = new Random();
         }
 
@@ -60,38 +59,6 @@ namespace CalculoSeguroVeiculo.Test
             {
                 Assert.AreEqual("Não foi possível Inserir o Segurado", e.Message);
             }
-        }
-
-        [Test]
-        public void TestGetIdNotNull()
-        {
-            var id = 1;
-            var veiculo = _seguradoApplicationService.GetById(id);
-            Assert.NotNull(veiculo);
-            Assert.NotNull(veiculo.Id = id);
-        }
-
-        [Test]
-        public void TestGetIdIsNull()
-        {
-            var id = 0;
-            var segurado = _seguradoApplicationService.GetById(id);
-            Assert.IsNull(segurado);
-        }
-
-        [Test]
-        public void TestGetAllNotNull()
-        {
-            var segurados = _seguradoApplicationService.GetAll();
-            Assert.NotNull(segurados);
-        }
-
-        [Test]
-        public void TestGetAllIsNull()
-        {
-            int id = 0;
-            var segurados = _seguradoApplicationService.GetAll().Where(x => x.Id == id);
-            Assert.IsEmpty(segurados);
         }
 
         [Test]

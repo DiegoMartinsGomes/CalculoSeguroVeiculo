@@ -2,6 +2,7 @@
 using CalculoSeguroVeiculo.Infrastructure.Context;
 using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CalculoSeguroVeiculo.Infrastructure.Repository
@@ -20,6 +21,15 @@ namespace CalculoSeguroVeiculo.Infrastructure.Repository
         public void Add(TEntity entity)
         {
             _entity.Add(entity);
+            _context.SaveChanges();
+        }
+
+        public void AddRange(IEnumerable<TEntity> entities)
+        {
+            foreach (TEntity entity in entities)
+            {
+                _entity.Add(entity);
+            }
             _context.SaveChanges();
         }
 

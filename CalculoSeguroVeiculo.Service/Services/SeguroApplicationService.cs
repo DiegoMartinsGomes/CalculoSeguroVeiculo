@@ -4,7 +4,7 @@ using CalculoSeguroVeiculo.DataTransferObject.Relatorio.V2;
 using CalculoSeguroVeiculo.DataTransferObject.SeguroDto;
 using CalculoSeguroVeiculo.Domain.Mappings;
 using CalculoSeguroVeiculo.Domain.Models;
-using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
+using CalculoSeguroVeiculo.Infrastructure.UnitOfWork.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,28 +12,20 @@ using System.Linq;
 
 namespace CalculoSeguroVeiculo.Service.Services
 {
-    public class SeguroApplicationService : ApplicationService<Seguro>, ISeguroApplicationService
+    public class SeguroApplicationService : ISeguroApplicationService
     {
-        private readonly ISeguroRepository _seguroRepository;
-        private readonly ISeguradoApplicationService _seguradoApplicationService;
-        private readonly IVeiculoApplicationService _veiculoApplicationService;
+        private readonly ISeguroUnitOfWork _unitOfWork;
 
-        public SeguroApplicationService(
-            ISeguroRepository seguroRepository,
-            ISeguradoApplicationService seguradoApplicationService,
-            IVeiculoApplicationService veiculoApplicationService) : base(seguroRepository)
+        public SeguroApplicationService(ISeguroUnitOfWork unitOfWork)
         {
-            _seguroRepository = seguroRepository;
-            _seguradoApplicationService = seguradoApplicationService;
-            _veiculoApplicationService = veiculoApplicationService;
+            _unitOfWork = unitOfWork;
         }
 
         public void InclusaoSeguro(SeguroPostDto seguroDto)
         {
             if (seguroDto == null)
                 throw new Exception("Não foi possível Inserir o Seguro.");
-
-            var veiculo = _veiculoApplicationService.GetById(seguroDto.IdVeiculo);
+            var veiculo = _unitOfWork.VeiculoRepository().GetById(seguroDto.IdVeiculo);
             var valorSeguro = CalculoSeguroVeiculo(veiculo);
             var seguro = new Seguro()
             {
@@ -42,7 +34,7 @@ namespace CalculoSeguroVeiculo.Service.Services
                 DataCalculo = DateTime.Now,
                 Valor = valorSeguro,
             };
-            Add(seguro);
+            _unitOfWork.SeguroRepository().Add(seguro);
         }
 
         public decimal CalculoSeguroVeiculo(Veiculo veiculo)
@@ -89,7 +81,7 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public SeguroGetDto GetByIdDto(int id)
         {
-            var seguro = _seguroRepository.GetAll()
+            var seguro = _unitOfWork.SeguroRepository().GetAll()
                 .Where(x => x.Id == id)
                 .Select(x => new Seguro()
                 {
@@ -108,7 +100,7 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public IEnumerable<Seguro> GetAllRelacionado()
         {
-            var seguros = _seguroRepository.GetAll()
+            var seguros = _unitOfWork.SeguroRepository().GetAll()
                 .Select(x => new Seguro()
                 {
                     Id = x.Id,

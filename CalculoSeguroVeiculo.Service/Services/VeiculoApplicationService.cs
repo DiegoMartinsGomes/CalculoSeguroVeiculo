@@ -1,20 +1,19 @@
-﻿using System;
-using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
+﻿using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
 using CalculoSeguroVeiculo.Domain.Mappings;
-using CalculoSeguroVeiculo.Domain.Models;
-using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
+using CalculoSeguroVeiculo.Infrastructure.UnitOfWork.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace CalculoSeguroVeiculo.Service.Services
 {
-    public class VeiculoApplicationService : ApplicationService<Veiculo>, IVeiculoApplicationService
+    public class VeiculoApplicationService : IVeiculoApplicationService
     {
-        private readonly IVeiculoRepository _veiculoRepository;
+        private readonly IVeiculoUnitOfWork _unitOfWork;
 
-        public VeiculoApplicationService(IVeiculoRepository veiculoRepository) : base(veiculoRepository)
+        public VeiculoApplicationService(IVeiculoUnitOfWork unitOfWork)
         {
-            _veiculoRepository = veiculoRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public void InclusaoVeiculo(VeiculoPostDto veiculoDto)
@@ -22,18 +21,18 @@ namespace CalculoSeguroVeiculo.Service.Services
             if (veiculoDto == null)
                 throw new Exception("Não foi possível inserir o Veiculo.");
             var veiculo = Mapping.ToVeiculo(veiculoDto);
-            Add(veiculo);
+            _unitOfWork.VeiculoRepository().Add(veiculo);
         }
 
         public IEnumerable<VeiculoGetDto> GetAllDto()
         {
-            var veiculos = GetAll();
+            var veiculos = _unitOfWork.VeiculoRepository().GetAll();
             return Mapping.ToVeiculosGetDto(veiculos);
         }
 
         public VeiculoGetDto GetByIdDto(int id)
         {
-            var veiculo = GetById(id);
+            var veiculo = _unitOfWork.VeiculoRepository().GetById(id);
             return Mapping.ToVeiculoGetDto(veiculo);
         }
     }

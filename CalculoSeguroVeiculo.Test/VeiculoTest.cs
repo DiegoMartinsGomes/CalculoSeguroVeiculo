@@ -1,13 +1,12 @@
-﻿using CalculoSeguroVeiculo.Domain.Models;
+﻿using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
 using CalculoSeguroVeiculo.Infrastructure.Context;
 using CalculoSeguroVeiculo.Infrastructure.Repository;
+using CalculoSeguroVeiculo.Infrastructure.UnitOfWork;
 using CalculoSeguroVeiculo.Service.Services;
 using CalculoSeguroVeiculo.Test.MockDados;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
-using System.Linq;
-using CalculoSeguroVeiculo.DataTransferObject.VeiculoDto;
 
 namespace CalculoSeguroVeiculo.Test
 {
@@ -16,6 +15,7 @@ namespace CalculoSeguroVeiculo.Test
     {
         private readonly ReplyContext _context;
         private readonly VeiculoRepository _veiculoRepository;
+        private readonly VeiculoUnitOfWork _veiculoUnitOfWork;
         private readonly VeiculoApplicationService _veiculoApplicationService;
         private readonly Random _valorAleatorio;
 
@@ -26,7 +26,8 @@ namespace CalculoSeguroVeiculo.Test
             _context.SaveChanges();
 
             _veiculoRepository = new VeiculoRepository(_context);
-            _veiculoApplicationService = new VeiculoApplicationService(_veiculoRepository);
+            _veiculoUnitOfWork = new VeiculoUnitOfWork(_context, _veiculoRepository);
+            _veiculoApplicationService = new VeiculoApplicationService(_veiculoUnitOfWork);
             _valorAleatorio = new Random();
         }
 
@@ -57,38 +58,6 @@ namespace CalculoSeguroVeiculo.Test
             {
                 Assert.AreEqual("Não foi possível inserir o Veiculo.", e.Message);
             }
-        }
-
-        [Test]
-        public void TestGetIdNotNull()
-        {
-            var id = 1;
-            var veiculo = _veiculoApplicationService.GetById(id);
-            Assert.NotNull(veiculo);
-            Assert.NotNull(veiculo.Id = id);
-        }
-
-        [Test]
-        public void TestGetIdIsNull()
-        {
-            var id = 0;
-            var veiculo = _veiculoApplicationService.GetById(id);
-            Assert.IsNull(veiculo);
-        }
-
-        [Test]
-        public void TestGetAllNotNull()
-        {
-            var veiculos = _veiculoApplicationService.GetAll();
-            Assert.NotNull(veiculos);
-        }
-
-        [Test]
-        public void TestGetAllIsNull()
-        {
-            int id = 0;
-            var veiculos = _veiculoApplicationService.GetAll().Where(x => x.Id == id);
-            Assert.IsEmpty(veiculos);
         }
 
         [Test]
