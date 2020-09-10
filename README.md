@@ -47,3 +47,12 @@ Recursos de apoio
 		
 • Durante o desenvolvimento do projeto foi identificado problemas de compatibilidade entre pacotes Oracle.EntityFrameworkCore e Microsoft.EntityFrameworkCore.Relational, que ocasionou a não utilização do banco de dados Oracle, para poder minimizar o problema o projeto foi desenvolvido utilizando o banco de dados SQL Server. 		
 		
+#	***Melhorias Feitas Após a Entrega***
+	Após a entrega foram desenvolvidas algumas melhorias tais como?
+		• Incorporação de Unit Of Work;
+		• Isolamento da Injecão de Dependência;
+		• Objeto padrão para respostas da API;
+		• Organização dos projetos em pastas na solution.
+		
+	Essa melhorias podem ser vizualizadas na branch develop.		
+		
