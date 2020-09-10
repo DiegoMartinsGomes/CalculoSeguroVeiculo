@@ -1,9 +1,9 @@
-﻿using CalculoSeguroVeiculo.Service.DependencyInjection.ApplicationServiceInjection;
-using CalculoSeguroVeiculo.Service.DependencyInjection.RepositoryInjection;
+﻿using CalculoSeguroVeiculo.DependencyInjection.ApplicationServiceInjection;
+using CalculoSeguroVeiculo.DependencyInjection.RepositoryInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CalculoSeguroVeiculo.Service.DependencyInjection
+namespace CalculoSeguroVeiculo.DependencyInjection
 {
     public static class ConfigureBindingsDependencyInjection
     {

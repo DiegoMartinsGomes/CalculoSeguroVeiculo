@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace CalculoSeguroVeiculo.Service.DependencyInjection
+namespace CalculoSeguroVeiculo.DependencyInjection
 {
     public static class VersioningExtensions
     {

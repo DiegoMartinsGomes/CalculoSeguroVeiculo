@@ -2,7 +2,7 @@
 using CalculoSeguroVeiculo.Service.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CalculoSeguroVeiculo.Service.DependencyInjection.ApplicationServiceInjection
+namespace CalculoSeguroVeiculo.DependencyInjection.ApplicationServiceInjection
 {
     public class ConfigureBindingsApplicationService
     {

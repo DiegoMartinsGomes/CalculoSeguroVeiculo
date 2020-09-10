@@ -2,7 +2,7 @@
 using CalculoSeguroVeiculo.Infrastructure.Repository.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CalculoSeguroVeiculo.Service.DependencyInjection.RepositoryInjection
+namespace CalculoSeguroVeiculo.DependencyInjection.RepositoryInjection
 {
     public class ConfigureBindingsRepository
     {

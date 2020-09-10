@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculoSeguroVeiculo.Crossc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculoSeguroVeiculo.Test", "CalculoSeguroVeiculo.Test\CalculoSeguroVeiculo.Test.csproj", "{07B78526-8BDA-42DE-B367-07FBE7910E0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculoSeguroVeiculo.DataTransferObject", "CalculoSeguroVeiculo.DataTransferObject\CalculoSeguroVeiculo.DataTransferObject.csproj", "{3B397789-3B5E-417D-8094-E78AB03611FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalculoSeguroVeiculo.DataTransferObject", "CalculoSeguroVeiculo.DataTransferObject\CalculoSeguroVeiculo.DataTransferObject.csproj", "{3B397789-3B5E-417D-8094-E78AB03611FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculoSeguroVeiculo.DependencyInjection", "CalculoSeguroVeiculo.DependencyInjection\CalculoSeguroVeiculo.DependencyInjection.csproj", "{3BE8E5FC-9FAD-45D4-8237-6296B4E0D92B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{3B397789-3B5E-417D-8094-E78AB03611FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B397789-3B5E-417D-8094-E78AB03611FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B397789-3B5E-417D-8094-E78AB03611FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BE8E5FC-9FAD-45D4-8237-6296B4E0D92B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BE8E5FC-9FAD-45D4-8237-6296B4E0D92B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BE8E5FC-9FAD-45D4-8237-6296B4E0D92B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BE8E5FC-9FAD-45D4-8237-6296B4E0D92B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

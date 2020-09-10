@@ -1,4 +1,4 @@
-using CalculoSeguroVeiculo.Service.DependencyInjection;
+using CalculoSeguroVeiculo.DependencyInjection;
 using CalculoSeguroVeiculo.WebApi.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

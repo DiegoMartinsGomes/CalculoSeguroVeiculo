@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CalculoSeguroVeiculo.Service.DependencyInjection
+namespace CalculoSeguroVeiculo.DependencyInjection
 {
     public class ConfigureBindingsDatabaseContext
     {
