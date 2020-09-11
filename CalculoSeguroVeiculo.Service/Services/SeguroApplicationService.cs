@@ -24,7 +24,6 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public Resposta InclusaoSeguro(SeguroPostDto seguroDto)
         {
-            var resposta = new Resposta();
             try
             {
                 var veiculo = _unitOfWork.VeiculoRepository().GetById(seguroDto.IdVeiculo);
@@ -37,72 +36,68 @@ namespace CalculoSeguroVeiculo.Service.Services
                     Valor = valorSeguro,
                 };
                 _unitOfWork.SeguroRepository().Add(seguro);
+                return MontarResposta.Sucesso();
             }
             catch (Exception e)
             {
-                RespostaErro.Montar(resposta, e);
+                return MontarResposta.Erro(e);
             }
-            return resposta;
         }
 
         public Resposta<RelatorioSeguroV1GetDto> GerarRelatorioV1()
         {
-            var resposta = new Resposta<RelatorioSeguroV1GetDto>();
             try
             {
                 var seguros = GetAllRelacionado();
                 var media = seguros.Average(x => x.Valor);
-                resposta.Resultado = new RelatorioSeguroV1GetDto()
+                var dto = new RelatorioSeguroV1GetDto()
                 {
                     Media = media
                 };
+                return MontarResposta.Sucesso(dto);
             }
             catch (Exception e)
             {
-                RespostaErro.Montar(resposta, e);
+                return MontarResposta.Erro<RelatorioSeguroV1GetDto>(e);
             }
-            return resposta;
         }
 
         public Resposta<RelatorioSeguroV2GetDto> GerarRelatorioV2()
         {
-            var resposta = new Resposta<RelatorioSeguroV2GetDto>();
             try
             {
                 var seguros = GetAllRelacionado();
                 var media = seguros.Average(x => x.Valor);
-                resposta.Resultado = new RelatorioSeguroV2GetDto()
+                var dto = new RelatorioSeguroV2GetDto()
                 {
                     Seguros = Mapping.ToSegurosGetDto(seguros),
                     Mensagem = $"A média aritimética dos Seguros é de: {media}.",
                     Media = media
                 };
+                return MontarResposta.Sucesso(dto);
             }
             catch (Exception e)
             {
-                RespostaErro.Montar(resposta, e);
+                return MontarResposta.Erro<RelatorioSeguroV2GetDto>(e);
             }
-            return resposta;
         }
 
         public Resposta<IEnumerable<SeguroGetDto>> GetAllDto()
         {
-            var resposta = new Resposta<IEnumerable<SeguroGetDto>>();
             try
             {
                 var seguros = GetAllRelacionado();
-                resposta.Resultado = Mapping.ToSegurosGetDto(seguros);
+                var dto = Mapping.ToSegurosGetDto(seguros);
+                return MontarResposta.Sucesso(dto);
             }
             catch (Exception e)
             {
-                RespostaErro.Montar(resposta, e);
+                return MontarResposta.Erro<IEnumerable<SeguroGetDto>>(e);
             }
-            return resposta;
         }
 
         public Resposta<SeguroGetDto> GetByIdDto(int id)
         {
-            var resposta = new Resposta<SeguroGetDto>();
             try
             {
                 var seguro = _unitOfWork.SeguroRepository().GetAll()
@@ -117,13 +112,13 @@ namespace CalculoSeguroVeiculo.Service.Services
                         Segurado = x.Segurado,
                         Veiculo = x.Veiculo
                     }).FirstOrDefault();
-                resposta.Resultado = Mapping.ToSeguroGetDto(seguro, seguro.Segurado, seguro.Veiculo);
+                var dto = Mapping.ToSeguroGetDto(seguro, seguro.Segurado, seguro.Veiculo);
+                return MontarResposta.Sucesso(dto);
             }
             catch (Exception e)
             {
-                RespostaErro.Montar(resposta, e);
+                return MontarResposta.Erro<SeguroGetDto>(e);
             }
-            return resposta;
         }
 
         private IEnumerable<Seguro> GetAllRelacionado()

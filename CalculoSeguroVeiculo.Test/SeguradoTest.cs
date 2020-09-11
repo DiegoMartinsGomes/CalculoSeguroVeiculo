@@ -8,6 +8,7 @@ using CalculoSeguroVeiculo.Test.MockDados;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace CalculoSeguroVeiculo.Test
 {
@@ -40,10 +41,14 @@ namespace CalculoSeguroVeiculo.Test
                 CPF = $"{12345678910 * _valorAleatorio.Next()}".Substring(0, 11),
                 Idade = _valorAleatorio.Next(18, 100)
             };
-            _seguradoApplicationService.InclusaoSegurado(segurado);
             Assert.IsNotNull(segurado.Nome);
+            Assert.IsTrue(!string.IsNullOrEmpty(segurado.Nome));
             Assert.IsNotNull(segurado.CPF);
+            Assert.AreEqual(segurado.CPF.Count(), 11);
             Assert.IsTrue(segurado.Idade > 0);
+            var resposta = _seguradoApplicationService.InclusaoSegurado(segurado);
+            Assert.AreEqual(resposta.Status, StatusResposta.Sucesso);
+            Assert.AreEqual(resposta.Exception, null);
         }
 
         [Test]
@@ -51,12 +56,15 @@ namespace CalculoSeguroVeiculo.Test
         {
             var resposta = _seguradoApplicationService.InclusaoSegurado(null);
             Assert.AreEqual(resposta.Status, StatusResposta.Erro);
+            Assert.IsNotNull(resposta.Exception);
         }
 
         [Test]
-        public void GetAllDtoIsNotNull()
+        public void GetAllDtoPass()
         {
             var resposta = _seguradoApplicationService.GetAllDto();
+            Assert.IsNotNull(resposta);
+            Assert.IsNotNull(resposta.Resultado);
             foreach (var segurado in resposta.Resultado)
             {
                 Assert.IsNotNull(segurado);
@@ -68,7 +76,7 @@ namespace CalculoSeguroVeiculo.Test
         }
 
         [Test]
-        public void GetByIdDtoNotNull()
+        public void GetByIdDtoPass()
         {
             var resposta = _seguradoApplicationService.GetByIdDto(1);
             Assert.IsNotNull(resposta);
@@ -79,10 +87,12 @@ namespace CalculoSeguroVeiculo.Test
         }
 
         [Test]
-        public void GetByIdDto()
+        public void GetByIdDtoFail()
         {
             var resposta = _seguradoApplicationService.GetByIdDto(0);
+            Assert.IsNotNull(resposta);
             Assert.AreEqual(resposta.Status, StatusResposta.Erro);
+            Assert.IsNotNull(resposta.Exception);
         }
     }
 }

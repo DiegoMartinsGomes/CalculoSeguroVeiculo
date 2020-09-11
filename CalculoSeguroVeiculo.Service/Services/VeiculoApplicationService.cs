@@ -19,47 +19,44 @@ namespace CalculoSeguroVeiculo.Service.Services
 
         public Resposta InclusaoVeiculo(VeiculoPostDto veiculoDto)
         {
-            var resposta = new Resposta();
             try
             {
                 var veiculo = Mapping.ToVeiculo(veiculoDto);
                 _unitOfWork.VeiculoRepository().Add(veiculo);
+                return MontarResposta.Sucesso();
             }
             catch (Exception e)
             {
-                RespostaErro.Montar(resposta, e);
+                return MontarResposta.Erro(e);
             }
-            return resposta;
         }
 
         public Resposta<IEnumerable<VeiculoGetDto>> GetAllDto()
         {
-            var resposta = new Resposta<IEnumerable<VeiculoGetDto>>();
             try
             {
                 var veiculos = _unitOfWork.VeiculoRepository().GetAll();
-                resposta.Resultado = Mapping.ToVeiculosGetDto(veiculos);
+                var dto = Mapping.ToVeiculosGetDto(veiculos);
+                return MontarResposta.Sucesso(dto);
             }
             catch (Exception e)
             {
-                RespostaErro.Montar(resposta, e);
+                return MontarResposta.Erro<IEnumerable<VeiculoGetDto>>(e);
             }
-            return resposta;
         }
 
         public Resposta<VeiculoGetDto> GetByIdDto(int id)
         {
-            var resposta = new Resposta<VeiculoGetDto>();
             try
             {
                 var veiculo = _unitOfWork.VeiculoRepository().GetById(id);
-                resposta.Resultado = Mapping.ToVeiculoGetDto(veiculo);
+                var dto = Mapping.ToVeiculoGetDto(veiculo);
+                return MontarResposta.Sucesso(dto);
             }
             catch (Exception e)
             {
-                RespostaErro.Montar(resposta, e);
+                return MontarResposta.Erro<VeiculoGetDto>(e);
             }
-            return resposta;
         }
     }
 }
