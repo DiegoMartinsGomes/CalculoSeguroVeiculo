@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.7" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CalculoSeguroVeiculo.Crosscutting\CalculoSeguroVeiculo.Crosscutting.csproj" />
     <ProjectReference Include="..\CalculoSeguroVeiculo.DataTransferObject\CalculoSeguroVeiculo.DataTransferObject.csproj" />
   </ItemGroup>
