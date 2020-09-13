@@ -1,6 +1,6 @@
 ﻿using CalculoSeguroVeiculo.Crosscutting.RespostaApi;
 using CalculoSeguroVeiculo.DataTransferObject.SeguradoDto;
-using CalculoSeguroVeiculo.Domain.Mappings;
+using CalculoSeguroVeiculo.Infrastructure.Mappings;
 using CalculoSeguroVeiculo.Infrastructure.UnitOfWork.Interfaces;
 using CalculoSeguroVeiculo.Service.Interfaces;
 using System;

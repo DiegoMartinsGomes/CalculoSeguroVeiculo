@@ -3,7 +3,7 @@ using CalculoSeguroVeiculo.Domain.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CalculoSeguroVeiculo.Domain.Mappings
+namespace CalculoSeguroVeiculo.Infrastructure.Mappings
 {
     public static partial class Mapping
     {
