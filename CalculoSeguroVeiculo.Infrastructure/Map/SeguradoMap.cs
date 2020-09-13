@@ -8,17 +8,17 @@ namespace CalculoSeguroVeiculo.Infrastructure.Map
     {
         public void Configure(EntityTypeBuilder<Segurado> builder)
         {
-            builder.ToTable("Segurado");
+            builder.ToTable("SEGURADO");
 
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
-                .HasColumnName("Id")
+                .HasColumnName("ID")
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
             builder.Property(x => x.Nome)
-                .HasColumnName("Nome")
+                .HasColumnName("NOME")
                 .IsRequired()
                 .HasMaxLength(100);
 
@@ -28,7 +28,7 @@ namespace CalculoSeguroVeiculo.Infrastructure.Map
                 .HasMaxLength(11);
 
             builder.Property(x => x.Idade)
-                .HasColumnName("Idade")
+                .HasColumnName("IDADE")
                 .IsRequired(false);
         }
     }

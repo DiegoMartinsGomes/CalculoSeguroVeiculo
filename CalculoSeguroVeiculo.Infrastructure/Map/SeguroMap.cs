@@ -8,22 +8,22 @@ namespace CalculoSeguroVeiculo.Infrastructure.Map
     {
         public void Configure(EntityTypeBuilder<Seguro> builder)
         {
-            builder.ToTable("Seguro");
+            builder.ToTable("SEGURO");
 
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
-                .HasColumnName("Id")
+                .HasColumnName("ID")
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
             builder.Property(x => x.Valor)
-                .HasColumnName("ValorSeguro")
+                .HasColumnName("VALORSEGURO")
                 .HasColumnType("decimal(16,2)")
                 .IsRequired();
 
             builder.Property(x => x.DataCalculo)
-                .HasColumnName("DataCalculo")
+                .HasColumnName("DATACALCULO")
                 .HasColumnType("datetime")
                 .IsRequired();
 
