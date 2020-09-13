@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CalculoSeguroVeiculo.Crosscutting\CalculoSeguroVeiculo.Crosscutting.csproj" />
-    <ProjectReference Include="..\CalculoSeguroVeiculo.DataTransferObject\CalculoSeguroVeiculo.DataTransferObject.csproj" />
   </ItemGroup>
 
 </Project>

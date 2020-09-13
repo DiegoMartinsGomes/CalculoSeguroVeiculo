@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CalculoSeguroVeiculo.DataTransferObject\CalculoSeguroVeiculo.DataTransferObject.csproj" />
     <ProjectReference Include="..\CalculoSeguroVeiculo.Domain\CalculoSeguroVeiculo.Domain.csproj" />
   </ItemGroup>
 
