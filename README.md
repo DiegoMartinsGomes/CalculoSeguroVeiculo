@@ -53,6 +53,7 @@ Recursos de apoio
 		• Isolamento da Injecão de Dependência;
 		• Objeto padrão para respostas da API;
 		• Organização dos projetos em pastas na solution.
+		• Atualização do pacote Oracle.EntityFrameworkCore, foi liberado uma nova versão no dia 08/09/2020 que solucionou o problema mensionado à cima.
 		
 	Essa melhorias podem ser vizualizadas na branch develop.		
 		
